@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Domain\ValueObjects\Address.cs" />
+    <Compile Remove="Domain\ValueObjects\PhoneNumber.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Domain\Events\" />
+    <Folder Include="Domain\Utilities\" />
+    <Folder Include="Domain\ValueObjects\" />
+  </ItemGroup>
+
 </Project>
