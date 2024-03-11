@@ -7,12 +7,24 @@ namespace UM.Domain.UserAgg
 {
     public class User : AggregateRoot<UserId>
     {
+        public string Name { get; private set; }
+        public string Family { get; private set; }
+        public string PhoneNumber { get; private set; }
+        public string Email { get; private set; }
+        public string Password { get; private set; }
+        public string AvatarName { get; set; }
+        public bool IsActive { get; set; }
+
+        public Gender Gender { get; private set; }
+        public List<UserRole> Roles { get; }
+        public List<UserToken> Tokens { get; }
+
         private User()
         {
 
         }
 
-        public User(string name, string family, string phoneNumber, string email,
+        private User(string name, string family, string phoneNumber, string email,
             string password, Gender gender, IUserDomainService userDomainService)
         {
             Guard(phoneNumber, email, userDomainService);
@@ -29,17 +41,13 @@ namespace UM.Domain.UserAgg
             Tokens = [];
         }
 
-        public string Name { get; private set; }
-        public string Family { get; private set; }
-        public string PhoneNumber { get; private set; }
-        public string Email { get; private set; }
-        public string Password { get; private set; }
-        public string AvatarName { get; set; }
-        public bool IsActive { get; set; }
 
-        public Gender Gender { get; private set; }
-        public List<UserRole> Roles { get; }
-        public List<UserToken> Tokens { get; }
+        public static User CreateNew(string name, string family, string phoneNumber, string email,
+            string password, Gender gender, IUserDomainService userDomainService)
+        {
+            return new User(name, family, phoneNumber, email, password, gender, userDomainService);
+        }
+
 
         public void Edit(string name, string family, string phoneNumber, string email,
             Gender gender, IUserDomainService userDomainService)
@@ -58,7 +66,7 @@ namespace UM.Domain.UserAgg
 
             Password = newPassword;
         }
-        public static User RegisterUser(string phoneNumber, string password, IUserDomainService userDomainService)
+        public static User LoginUser(string phoneNumber, string password, IUserDomainService userDomainService)
         {
             return new User("", "", phoneNumber, null, password, Gender.None, userDomainService);
         }
