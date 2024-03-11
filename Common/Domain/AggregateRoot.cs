@@ -2,7 +2,7 @@
 
 namespace Common.Domain;
 
-public class AggregateRoot : BaseEntity
+public class AggregateRoot<TKey> : BaseEntity<TKey>
 {
     private readonly List<BaseDomainEvent> _domainEvents = [];
 
@@ -12,6 +12,11 @@ public class AggregateRoot : BaseEntity
     public void AddDomainEvent(BaseDomainEvent eventItem)
     {
         _domainEvents.Add(eventItem);
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
     }
 
     public void RemoveDomainEvent(BaseDomainEvent eventItem)

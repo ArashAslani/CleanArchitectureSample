@@ -2,12 +2,12 @@
 
 namespace Common.Domain.Repository;
 
-public interface IBaseRepository<T> where T : BaseEntity
+public interface IBaseRepository<T, TKey> where T : BaseEntity<TKey>
 {
     #region Async Methods
-    Task<T?> GetAsync(Guid id);
+    Task<T?> GetAsync(TKey id);
 
-    Task<T?> GetTracking(Guid id);
+    Task<T?> GetTracking(TKey id);
 
     Task AddAsync(T entity);
 

@@ -14,7 +14,6 @@
   <ItemGroup>
     <Folder Include="Domain\Events\" />
     <Folder Include="Domain\Utilities\" />
-    <Folder Include="Domain\ValueObjects\" />
   </ItemGroup>
 
 </Project>
