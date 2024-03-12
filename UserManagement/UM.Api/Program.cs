@@ -1,5 +1,7 @@
 
 using Common.Application;
+using Common.Application.FileUtil.Contracts;
+using Common.Application.FileUtil.Services;
 using UM.Bootstrapper;
 
 namespace UM.Api;
@@ -14,9 +16,7 @@ public class Program
         var connectionString = builder.Configuration.GetConnectionString("ApplicationConnection");
         builder.Services.RegisterUserManagementDependency(connectionString);
         builder.Services.RegisterCommonDependency();
-
-
-
+        builder.Services.AddTransient<IFileService, FileService>();
 
 
 

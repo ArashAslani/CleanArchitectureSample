@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Role\" />
-    <Folder Include="UserApplication\ChangePassword\" />
-    <Folder Include="UserApplication\Edit\" />
-    <Folder Include="UserApplication\RemoveToken\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.csproj" />
     <ProjectReference Include="..\UM.Domain\UM.Domain.csproj" />
   </ItemGroup>
