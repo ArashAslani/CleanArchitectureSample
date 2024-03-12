@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.9.0" />
-    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="MediatR" Version="10.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />
 	<PackageReference Include="System.Drawing.Common" Version="9.0.0-preview.1.24081.2" />
 

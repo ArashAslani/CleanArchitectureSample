@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using UM.Application.UserApplication;
 using UM.Application.UserApplication.Register;
@@ -14,8 +15,7 @@ namespace UM.Bootstrapper
         {
             InfrastructureBootstrapper.Init(services, connectionString);
 
-            services.AddMediatR(ctf => ctf.RegisterServicesFromAssembly(typeof(Directories).Assembly));
-            //services.AddMediatR(ctf => ctf.RegisterServicesFromAssembly(typeof(GetCategoryByIdQuery).Assembly));
+            services.AddMediatR(typeof(Directories).Assembly);
             services.AddTransient<IUserDomainService, UserDomainService>();
             services.AddValidatorsFromAssembly(typeof(RegisterUserCommand).Assembly);
         }

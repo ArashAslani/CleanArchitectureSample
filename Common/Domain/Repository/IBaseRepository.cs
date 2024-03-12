@@ -2,36 +2,34 @@
 
 namespace Common.Domain.Repository;
 
-public interface IBaseRepository<T, TKey> where T : BaseEntity<TKey>
+public interface IBaseRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
 {
     #region Async Methods
-    Task<T?> GetAsync(TKey id);
+     Task<TEntity?> GetAsync(TKey id);
 
-    Task<T?> GetTracking(TKey id);
+    Task<TEntity?> GetAsTrackingAsync(TKey id);
 
-    Task AddAsync(T entity);
+    Task AddAsync(TEntity entity);
 
-    Task AddRange(ICollection<T> entities);
-
-    Task UpdateAsync(T entity);
+    Task AddRangeAsync(ICollection<TEntity> entities);
 
     Task<int> SaveAsync();
 
-    Task<bool> ExistsAsync(Expression<Func<T, bool>> expression);
+    Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> expression);
 
     #endregion
 
     #region Sync Methods
 
-    void Add(T entity);
+    void Add(TEntity entity);
 
-    void Update(T entity);
+    void Update(TEntity entity);
 
     void Save();
 
-    bool Exists(Expression<Func<T, bool>> expression);
+    bool Exists(Expression<Func<TEntity, bool>> expression);
 
-    T? Get(Guid id);
+    TEntity? Get(TKey id);
 
     #endregion
 }

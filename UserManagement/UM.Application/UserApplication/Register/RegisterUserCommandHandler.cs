@@ -21,7 +21,7 @@ internal class RegisterUserCommandHandler : IBaseCommandHandler<RegisterUserComm
         var user = User.CreateNew(request.Name, request.Family, request.PhoneNumber
             , request.Email, password, request.Gender, _userDomainService);
 
-        _repository.Add(user);
+        await _repository.AddAsync(user);
         await _repository.SaveAsync();
         return OperationResult.Success();
     }

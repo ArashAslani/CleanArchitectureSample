@@ -1,6 +1,7 @@
 ﻿namespace Common.Domain;
 
-public class BaseEntity<TKey>
+public interface IEntity { }
+public class BaseEntity<TKey>: IEntity
 {
     public TKey Id { get; protected set; }
     public DateTime CreationDate { get; set; }

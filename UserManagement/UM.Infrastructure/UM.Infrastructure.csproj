@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.1.24081.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-preview.1.24081.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.csproj" />
     <ProjectReference Include="..\UM.Application\UM.Application.csproj" />
   </ItemGroup>
 

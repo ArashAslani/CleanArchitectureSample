@@ -10,7 +10,7 @@ public static class ImageValidator
         if (file == null) return false;
         try
         {
-            var img = Image.FromStream(file.OpenReadStream());
+            Image img = Image.FromStream(file.OpenReadStream());
             return true;
         }
         catch

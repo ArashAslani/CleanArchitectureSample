@@ -1,4 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using UM.Domain.RoleAgg.Repository;
+using UM.Domain.UserAgg.Repository;
+using UM.Infrastructure.Persistent.EFCore;
+using UM.Infrastructure.Utilities.MediatR;
 
 namespace UM.Infrastructure;
 
@@ -13,7 +17,7 @@ public class InfrastructureBootstrapper
 
         services.AddSingleton<ICustomPublisher, CustomPublisher>();
 
-        services.AddDbContext<ShopContext>(option =>
+        services.AddDbContext<UserManagmentContext>(option =>
         {
             option.UseSqlServer(connectionString);
         });
