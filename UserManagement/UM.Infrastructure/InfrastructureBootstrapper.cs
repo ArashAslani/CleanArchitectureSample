@@ -1,7 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using UM.Domain.RoleAgg.Repository;
 using UM.Domain.UserAgg.Repository;
 using UM.Infrastructure.Persistent.EFCore;
+using UM.Infrastructure.Persistent.EFCore.RoleAgg;
+using UM.Infrastructure.Persistent.EFCore.UserAgg;
 using UM.Infrastructure.Utilities.MediatR;
 
 namespace UM.Infrastructure;
