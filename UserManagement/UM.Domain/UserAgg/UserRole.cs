@@ -1,14 +1,15 @@
 ﻿using Common.Domain;
+using UM.Domain.RoleAgg;
 
 namespace UM.Domain.UserAgg;
 
 public class UserRole : BaseEntity<long>
 {
-    public UserRole(long roleId)
+    public UserRole(RoleId roleId)
     {
         RoleId = roleId;
     }
 
     public UserId UserId { get; internal set; }
-    public long RoleId { get; private set; }
+    public RoleId RoleId { get; private set; }
 }

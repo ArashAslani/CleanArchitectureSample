@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using UM.Domain.RoleAgg.Repository;
 using UM.Domain.UserAgg.Repository;
+using UM.Infrastructure.Persistant.Dapper;
 using UM.Infrastructure.Persistent.EFCore;
 using UM.Infrastructure.Persistent.EFCore.RoleAgg;
 using UM.Infrastructure.Persistent.EFCore.UserAgg;
@@ -19,6 +20,8 @@ public class InfrastructureBootstrapper
         services.AddTransient<IUserRepository, UserRepository>();
 
         services.AddSingleton<ICustomPublisher, CustomPublisher>();
+
+        services.AddTransient(_ => new DapperContext(connectionString));
 
         services.AddDbContext<UserManagmentContext>(option =>
         {

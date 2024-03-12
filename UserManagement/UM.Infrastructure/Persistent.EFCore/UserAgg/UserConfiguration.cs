@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using UM.Domain.UserAgg;
+using UM.Domain.RoleAgg;
 
 namespace UM.Infrastructure.Persistent.EFCore.UserAgg;
 
@@ -73,7 +74,13 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasConversion(
                     v => v.Value,
                     v => new UserId(v));
+            option.Property(x => x.RoleId)
+                .HasConversion(
+                    v => v.Value,
+                    v => new RoleId(v));
             option.HasIndex(b => b.UserId);
+            option.HasIndex(b => b.RoleId);
+
         });
     }
 }

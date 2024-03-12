@@ -83,7 +83,7 @@ namespace UM.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -129,6 +129,12 @@ namespace UM.Infrastructure.Migrations
                 name: "IX_Permissions_RoleId",
                 schema: "role",
                 table: "Permissions",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roles_RoleId",
+                schema: "user",
+                table: "Roles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(

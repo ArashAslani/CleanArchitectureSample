@@ -140,10 +140,12 @@ namespace UM.Infrastructure.Migrations
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
 
-                            b1.Property<long>("RoleId")
-                                .HasColumnType("bigint");
+                            b1.Property<Guid>("RoleId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.HasKey("UserId", "Id");
+
+                            b1.HasIndex("RoleId");
 
                             b1.HasIndex("UserId");
 
