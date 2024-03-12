@@ -25,12 +25,12 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(11);
 
-        builder.Property(b => b.Name)
+        builder.Property(b => b.FirstName)
             .IsRequired(false)
 
            .HasMaxLength(80);
 
-        builder.Property(b => b.Family)
+        builder.Property(b => b.LastName)
             .IsRequired(false)
             .HasMaxLength(80);
 
@@ -44,6 +44,13 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
         {
             option.ToTable("Tokens", "user");
             option.HasKey(b => b.Id);
+
+            option.Property(x => x.UserId)
+                .HasConversion(
+                    v => v.Value,
+                    v => new UserId(v));
+            option.HasIndex(b => b.UserId);
+
 
             option.Property(b => b.HashJwtToken)
                 .IsRequired()
@@ -62,6 +69,10 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
         builder.OwnsMany(b => b.Roles, option =>
         {
             option.ToTable("Roles", "user");
+            option.Property(x => x.UserId)
+                .HasConversion(
+                    v => v.Value,
+                    v => new UserId(v));
             option.HasIndex(b => b.UserId);
         });
     }

@@ -10,6 +10,6 @@ public class RolePermission : BaseEntity<long>
         Permission = permission;
     }
 
-    public long RoleId { get; internal set; }
+    public RoleId RoleId { get; internal set; }
     public Permission Permission { get; private set; }
 }

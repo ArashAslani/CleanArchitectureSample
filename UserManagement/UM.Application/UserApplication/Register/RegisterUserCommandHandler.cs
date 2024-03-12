@@ -18,7 +18,7 @@ internal class RegisterUserCommandHandler : IBaseCommandHandler<RegisterUserComm
     public async Task<OperationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var password = Sha256Hasher.Hash(request.Password);
-        var user = User.CreateNew(request.Name, request.Family, request.PhoneNumber
+        var user = User.CreateNew(request.FirstName, request.LastName, request.PhoneNumber
             , request.Email, password, request.Gender, _userDomainService);
 
         await _repository.AddAsync(user);

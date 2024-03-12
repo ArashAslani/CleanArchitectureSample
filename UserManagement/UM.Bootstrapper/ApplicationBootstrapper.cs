@@ -11,13 +11,15 @@ namespace UM.Bootstrapper
 {
     public static class ApplicationBootstrapper
     {
-        public static void RegisterShopDependency(this IServiceCollection services, string connectionString)
+        public static IServiceCollection RegisterUserManagementDependency(this IServiceCollection services, string connectionString)
         {
             InfrastructureBootstrapper.Init(services, connectionString);
 
             services.AddMediatR(typeof(Directories).Assembly);
             services.AddTransient<IUserDomainService, UserDomainService>();
             services.AddValidatorsFromAssembly(typeof(RegisterUserCommand).Assembly);
+
+            return services;
         }
     }
 }

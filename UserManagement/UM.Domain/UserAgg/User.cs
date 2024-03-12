@@ -7,8 +7,8 @@ namespace UM.Domain.UserAgg
 {
     public class User : AggregateRoot<UserId>
     {
-        public string Name { get; private set; }
-        public string Family { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
@@ -24,13 +24,13 @@ namespace UM.Domain.UserAgg
 
         }
 
-        private User(string name, string family, string phoneNumber, string email,
+        private User(string firstName, string lastName, string phoneNumber, string email,
             string password, Gender gender, IUserDomainService userDomainService)
         {
             Guard(phoneNumber, email, userDomainService);
 
-            Name = name;
-            Family = family;
+            FirstName = firstName;
+            LastName = lastName;
             PhoneNumber = phoneNumber;
             Email = email;
             Password = password;
@@ -42,19 +42,19 @@ namespace UM.Domain.UserAgg
         }
 
 
-        public static User CreateNew(string name, string family, string phoneNumber, string email,
+        public static User CreateNew(string firstName, string lastName, string phoneNumber, string email,
             string password, Gender gender, IUserDomainService userDomainService)
         {
-            return new User(name, family, phoneNumber, email, password, gender, userDomainService);
+            return new User(firstName, lastName, phoneNumber, email, password, gender, userDomainService);
         }
 
 
-        public void Edit(string name, string family, string phoneNumber, string email,
+        public void Edit(string firstName, string lastName, string phoneNumber, string email,
             Gender gender, IUserDomainService userDomainService)
         {
             Guard(phoneNumber, email, userDomainService);
-            Name = name;
-            Family = family;
+            FirstName = firstName;
+            LastName = lastName;
             PhoneNumber = phoneNumber;
             Email = email;
             Gender = gender;
@@ -96,7 +96,7 @@ namespace UM.Domain.UserAgg
 
             var token = new UserToken(hashJwtToken, hashRefreshToken, tokenExpireDate, refreshTokenExpireDate, device)
             {
-                UserId = Id.Value
+                UserId = Id
             };
             Tokens.Add(token);
         }

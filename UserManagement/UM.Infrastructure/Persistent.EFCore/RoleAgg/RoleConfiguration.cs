@@ -21,6 +21,12 @@ internal class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.OwnsMany(b => b.Permissions, option =>
         {
             option.ToTable("Permissions", "role");
+            option.Property(x => x.RoleId)
+             .HasConversion(
+                 v => v.Value,
+                 v => new RoleId(v));
+            option.HasIndex(b => b.RoleId);
+
         });
     }
 }

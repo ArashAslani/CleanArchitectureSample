@@ -4,10 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Common.Application;
 
-public class CommonBootstrapper
+public static class CommonBootstrapper
 {
-    public static void Init(IServiceCollection service)
+    public static IServiceCollection RegisterCommonDependency(this IServiceCollection service)
     {
         service.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehavior<,>));
+
+        return service;
     }
 }

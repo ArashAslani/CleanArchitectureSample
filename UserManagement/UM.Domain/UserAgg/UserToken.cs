@@ -18,7 +18,7 @@ public class UserToken : BaseEntity<long>
         RefreshTokenExpireDate = refreshTokenExpireDate;
         Device = device;
     }
-    public Guid UserId { get; internal set; }
+    public UserId UserId { get; internal set; }
     public string HashJwtToken { get; private set; }
     public string HashRefreshToken { get; private set; }
     public DateTime TokenExpireDate { get; private set; }

@@ -8,19 +8,21 @@
 
   <ItemGroup>
     <Compile Remove="Domain\ValueObjects\Address.cs" />
-    <Compile Remove="Domain\ValueObjects\PhoneNumber.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Domain\Events\" />
-    <Folder Include="Domain\Utilities\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="MediatR" Version="10.0.2" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0-preview.1.24080.9" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.24.0" />
 	<PackageReference Include="System.Drawing.Common" Version="9.0.0-preview.1.24081.2" />
 
   </ItemGroup>

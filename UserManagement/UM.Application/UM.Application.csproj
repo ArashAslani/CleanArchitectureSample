@@ -8,9 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Role\" />
-    <Folder Include="UserApplication\Login\" />
     <Folder Include="UserApplication\ChangePassword\" />
-    <Folder Include="UserApplication\AddToken\" />
     <Folder Include="UserApplication\Edit\" />
     <Folder Include="UserApplication\RemoveToken\" />
   </ItemGroup>

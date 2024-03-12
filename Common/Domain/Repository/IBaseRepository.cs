@@ -5,7 +5,7 @@ namespace Common.Domain.Repository;
 public interface IBaseRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
 {
     #region Async Methods
-     Task<TEntity?> GetAsync(TKey id);
+    Task<TEntity?> GetAsync(TKey id);
 
     Task<TEntity?> GetAsTrackingAsync(TKey id);
 
