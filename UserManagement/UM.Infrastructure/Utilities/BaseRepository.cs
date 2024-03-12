@@ -8,8 +8,8 @@ namespace UM.Infrastructure.Utilities;
 
 public class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
 {
-    protected readonly UserManagmentContext Context;
-    public BaseRepository(UserManagmentContext context) => Context = context;
+    protected readonly UserManagementContext Context;
+    public BaseRepository(UserManagementContext context) => Context = context;
 
 
     #region Async Methods

@@ -7,9 +7,9 @@ namespace UM.Query.Users.GetByPhoneNumber;
 
 public class GetUserByPhoneNumberQueryHandler : IQueryHandler<GetUserByPhoneNumberQuery, UserDto?>
 {
-    private readonly UserManagmentContext _context;
+    private readonly UserManagementContext _context;
 
-    public GetUserByPhoneNumberQueryHandler(UserManagmentContext context)
+    public GetUserByPhoneNumberQueryHandler(UserManagementContext context)
     {
         _context = context;
     }

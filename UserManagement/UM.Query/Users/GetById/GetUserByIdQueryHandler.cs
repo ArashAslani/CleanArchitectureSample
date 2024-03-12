@@ -7,9 +7,9 @@ namespace UM.Query.Users.GetById;
 
 public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserDto?>
 {
-    private readonly UserManagmentContext _context;
+    private readonly UserManagementContext _context;
 
-    public GetUserByIdQueryHandler(UserManagmentContext context)
+    public GetUserByIdQueryHandler(UserManagementContext context)
     {
         _context = context;
     }

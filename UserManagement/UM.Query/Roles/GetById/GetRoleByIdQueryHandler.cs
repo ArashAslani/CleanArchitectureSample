@@ -7,9 +7,9 @@ namespace UM.Query.Roles.GetById;
 
 public class GetRoleByIdQueryHandler : IQueryHandler<GetRoleByIdQuery, RoleDto?>
 {
-    private readonly UserManagmentContext _context;
+    private readonly UserManagementContext _context;
 
-    public GetRoleByIdQueryHandler(UserManagmentContext context)
+    public GetRoleByIdQueryHandler(UserManagementContext context)
     {
         _context = context;
     }

@@ -10,7 +10,7 @@ using UM.Infrastructure.Persistent.EFCore;
 
 namespace UM.Infrastructure.Migrations
 {
-    [DbContext(typeof(UserManagmentContext))]
+    [DbContext(typeof(UserManagementContext))]
     partial class UserManagmentContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -7,10 +7,10 @@ using UM.Infrastructure.Utilities.MediatR;
 
 namespace UM.Infrastructure.Persistent.EFCore;
 
-public class UserManagmentContext : DbContext
+public class UserManagementContext : DbContext
 {
     private readonly ICustomPublisher _publisher;
-    public UserManagmentContext(DbContextOptions<UserManagmentContext> options, ICustomPublisher publisher) : base(options)
+    public UserManagementContext(DbContextOptions<UserManagementContext> options, ICustomPublisher publisher) : base(options)
     {
         _publisher = publisher;
     }
@@ -50,7 +50,7 @@ public class UserManagmentContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserManagmentContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserManagementContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }

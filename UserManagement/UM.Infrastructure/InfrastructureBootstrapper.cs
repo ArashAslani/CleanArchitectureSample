@@ -23,7 +23,7 @@ public class InfrastructureBootstrapper
 
         services.AddTransient(_ => new DapperContext(connectionString));
 
-        services.AddDbContext<UserManagmentContext>(option =>
+        services.AddDbContext<UserManagementContext>(option =>
         {
             option.UseSqlServer(connectionString);
         });

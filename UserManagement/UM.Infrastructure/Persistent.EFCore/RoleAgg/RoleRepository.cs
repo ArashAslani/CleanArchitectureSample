@@ -6,7 +6,7 @@ namespace UM.Infrastructure.Persistent.EFCore.RoleAgg;
 
 internal class RoleRepository : BaseRepository<Role, RoleId>, IRoleRepository
 {
-    public RoleRepository(UserManagmentContext context) : base(context)
+    public RoleRepository(UserManagementContext context) : base(context)
     {
     }
 }

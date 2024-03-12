@@ -7,9 +7,9 @@ namespace UM.Query.Users.GetByFilter;
 
 public class GetUserByFilterQueryHandler : IQueryHandler<GetUserByFilterQuery, UserFilterResult>
 {
-    private readonly UserManagmentContext _context;
+    private readonly UserManagementContext _context;
 
-    public GetUserByFilterQueryHandler(UserManagmentContext context)
+    public GetUserByFilterQueryHandler(UserManagementContext context)
     {
         _context = context;
     }

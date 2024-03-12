@@ -6,7 +6,7 @@ namespace UM.Infrastructure.Persistent.EFCore.UserAgg;
 
 public class UserRepository : BaseRepository<User, UserId>, IUserRepository
 {
-    public UserRepository(UserManagmentContext context) : base(context)
+    public UserRepository(UserManagementContext context) : base(context)
     {
     }
 }

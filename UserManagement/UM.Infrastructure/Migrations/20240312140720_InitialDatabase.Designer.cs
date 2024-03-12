@@ -11,7 +11,7 @@ using UM.Infrastructure.Persistent.EFCore;
 
 namespace UM.Infrastructure.Migrations
 {
-    [DbContext(typeof(UserManagmentContext))]
+    [DbContext(typeof(UserManagementContext))]
     [Migration("20240312140720_InitialDatabase")]
     partial class InitialDatabase
     {

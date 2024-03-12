@@ -29,7 +29,7 @@ public static class UserMapper
         };
     }
 
-    public static async Task<UserDto> SetUserRoleTitles(this UserDto userDto, UserManagmentContext context)
+    public static async Task<UserDto> SetUserRoleTitles(this UserDto userDto, UserManagementContext context)
     {
         var roleIds = userDto.Roles.Select(r => r.RoleId.Value);
         var result = await context.Roles.Where(r => roleIds.Contains(r.Id.Value)).ToListAsync();
