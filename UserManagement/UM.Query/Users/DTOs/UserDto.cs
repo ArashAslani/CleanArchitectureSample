@@ -6,7 +6,7 @@ using UM.Domain.UserAgg.Enums;
 
 namespace UM.Query.Users.DTOs;
 
-public class UserDto:BaseDto<UserId>
+public class UserDto : BaseDto<UserId>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

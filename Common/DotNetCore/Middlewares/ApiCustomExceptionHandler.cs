@@ -70,6 +70,7 @@ public class ApiCustomExceptionHandlerMiddleware
             await WriteToResponseAsync();
         }
         catch (Exception exception)
+        
         {
             _logger.LogError(exception, exception.Message);
 

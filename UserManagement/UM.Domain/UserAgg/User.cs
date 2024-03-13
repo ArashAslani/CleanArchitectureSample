@@ -1,5 +1,6 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
+using Common.Domain.ValueObjects;
 using UM.Domain.UserAgg.Enums;
 using UM.Domain.UserAgg.Services;
 
@@ -24,10 +25,12 @@ namespace UM.Domain.UserAgg
 
         }
 
-        private User(string firstName, string lastName, string phoneNumber, string email,
+        private User(UserId id, string firstName, string lastName, string phoneNumber, string email,
             string password, Gender gender, IUserDomainService userDomainService)
         {
             Guard(phoneNumber, email, userDomainService);
+
+            Id = id;
 
             FirstName = firstName;
             LastName = lastName;
@@ -45,7 +48,8 @@ namespace UM.Domain.UserAgg
         public static User CreateNew(string firstName, string lastName, string phoneNumber, string email,
             string password, Gender gender, IUserDomainService userDomainService)
         {
-            return new User(firstName, lastName, phoneNumber, email, password, gender, userDomainService);
+            var userId = new UserId(Guid.NewGuid());
+            return new User(userId, firstName, lastName, phoneNumber, email, password, gender, userDomainService);
         }
 
 
@@ -66,9 +70,10 @@ namespace UM.Domain.UserAgg
 
             Password = newPassword;
         }
-        public static User LoginUser(string phoneNumber, string password, IUserDomainService userDomainService)
+        public static User RegisterUser(string phoneNumber, string password, IUserDomainService userDomainService)
         {
-            return new User("", "", phoneNumber, null, password, Gender.None, userDomainService);
+            var userId = new UserId(Guid.NewGuid());
+            return new User(userId, "", "", phoneNumber, null, password, Gender.None, userDomainService);
         }
 
         public void SetAvatar(string imageName)

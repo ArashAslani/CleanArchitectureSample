@@ -1,5 +1,8 @@
 ﻿using Common.Domain.Exceptions;
 using Common.Domain;
+using UM.Domain.UserAgg.Enums;
+using UM.Domain.UserAgg.Services;
+using UM.Domain.UserAgg;
 
 namespace UM.Domain.RoleAgg;
 
@@ -12,21 +15,35 @@ public class Role : AggregateRoot<RoleId>
     {
     }
 
-    public Role(string title, List<RolePermission> permissions)
+    private Role(RoleId roleId, string title, List<RolePermission> permissions)
     {
         NullOrEmptyDomainDataException.CheckString(title, nameof(title));
 
+        Id = roleId;
         Title = title;
         Permissions = permissions;
     }
+    public static Role CreateNewWithPermissions(string title, List<RolePermission> permissions)
+    {
+        var roleId = new RoleId(Guid.NewGuid());
+        return new Role(roleId, title, permissions);
+    }
 
-    public Role(string title)
+
+    private Role(RoleId roleId, string title)
     {
         NullOrEmptyDomainDataException.CheckString(title, nameof(title));
-
+        Id = roleId;
         Title = title;
         Permissions = [];
     }
+
+    public static Role CreateNew(string title)
+    {
+        var roleId = new RoleId(Guid.NewGuid());
+        return new Role(roleId, title);
+    }
+
 
     public void Edit(string title)
     {

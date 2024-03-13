@@ -1,8 +1,10 @@
 
 using Common.Application;
-using Common.Application.FileUtil.Contracts;
-using Common.Application.FileUtil.Services;
+using Common.Application.FileUtilities.Contracts;
+using Common.Application.FileUtilities.Services;
 using UM.Bootstrapper;
+using Common.DotNetCore.Middlewares;
+using UM.Api.Infrastructure.Jwt;
 
 namespace UM.Api;
 
@@ -17,6 +19,7 @@ public class Program
         builder.Services.RegisterUserManagementDependency(connectionString);
         builder.Services.RegisterCommonDependency();
         builder.Services.AddTransient<IFileService, FileService>();
+        builder.Services.AddTransient<CustomJwtValidation>();
 
 
 
@@ -36,8 +39,12 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseStaticFiles();
+
+        app.UseAuthentication();
         app.UseAuthorization();
 
+        app.UseApiCustomExceptionHandler();
 
         app.MapControllers();
 

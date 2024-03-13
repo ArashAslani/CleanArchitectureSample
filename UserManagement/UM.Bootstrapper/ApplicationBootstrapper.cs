@@ -1,11 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using UM.Application.UserApplication;
-using UM.Application.UserApplication.Register;
+using System.Reflection;
+using UM.Application.Users;
+using UM.Application.Users.Create;
 using UM.Application.Utilities;
 using UM.Domain.UserAgg.Services;
 using UM.Infrastructure;
+using UM.Query.Users.GetByPhoneNumber;
 
 namespace UM.Bootstrapper
 {
@@ -15,9 +17,9 @@ namespace UM.Bootstrapper
         {
             InfrastructureBootstrapper.Init(services, connectionString);
 
-            services.AddMediatR(typeof(Directories).Assembly);
+            services.AddMediatR(typeof(Directories).Assembly, typeof(GetUserByPhoneNumberQuery).GetTypeInfo().Assembly);
             services.AddTransient<IUserDomainService, UserDomainService>();
-            services.AddValidatorsFromAssembly(typeof(RegisterUserCommand).Assembly);
+            services.AddValidatorsFromAssembly(typeof(CreateUserCommand).Assembly);
 
             return services;
         }
