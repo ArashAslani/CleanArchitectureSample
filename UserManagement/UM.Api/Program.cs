@@ -5,6 +5,7 @@ using Common.Application.FileUtilities.Services;
 using UM.Bootstrapper;
 using Common.DotNetCore.Middlewares;
 using UM.Api.Infrastructure.Jwt;
+using UM.Api.Infrastructure;
 
 namespace UM.Api;
 
@@ -14,13 +15,17 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+
         // Add services to the container.
         var connectionString = builder.Configuration.GetConnectionString("ApplicationConnection");
         builder.Services.RegisterUserManagementDependency(connectionString);
         builder.Services.RegisterCommonDependency();
+        builder.Services.RegisterApiDependecy();
         builder.Services.AddTransient<IFileService, FileService>();
         builder.Services.AddTransient<CustomJwtValidation>();
 
+        //Seeding Data
+        //SeedData.EnsureSeedData(connectionString: connectionString); Has Bug
 
 
         builder.Services.AddControllers();

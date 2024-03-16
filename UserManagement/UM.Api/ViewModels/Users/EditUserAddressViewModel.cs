@@ -21,10 +21,10 @@ public class EditUserAddressViewModel
     public string PhoneNumber { get; set; }
 
     [Required]
-    public string FirstName { get; set; }
+    public string Name { get; set; }
 
     [Required]
-    public string LastName { get; set; }
+    public string Family { get; set; }
 
     [Required]
     public string NationalCode { get; set; }
