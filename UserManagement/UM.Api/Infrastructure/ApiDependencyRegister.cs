@@ -4,8 +4,9 @@ namespace UM.Api.Infrastructure;
 
 public static class ApiDependencyRegister
 {
-    public static void RegisterApiDependecy(this IServiceCollection service)
+    public static void RegisterApiDependecy(this IServiceCollection service, IConfiguration configuration)
     {
+        service.AddJwtAuthentication(configuration);
         service.AddTransient<CustomJwtValidation>();
     }
 }

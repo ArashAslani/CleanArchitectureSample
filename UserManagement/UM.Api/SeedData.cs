@@ -1,13 +1,20 @@
 ﻿using Common.Application.SecurityUtilities;
+using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
+using System.Reflection;
+using UM.Application.Users;
+using UM.Application.Utilities;
 using UM.Domain.RoleAgg;
 using UM.Domain.RoleAgg.Enums;
 using UM.Domain.UserAgg;
+using UM.Domain.UserAgg.Repository;
 using UM.Domain.UserAgg.Services;
+using UM.Infrastructure.Persistent.EFCore.UserAgg;
 using UM.Infrastructure.Utilities.MediatR;
+using UM.Query.Users.GetByPhoneNumber;
 
 namespace UM.Infrastructure.Persistent.EFCore;
 
@@ -20,6 +27,11 @@ public class SeedData
         services.AddDbContext<UserManagementContext>(
             options => options.UseSqlServer(connectionString)
         );
+        services.AddTransient<ICustomPublisher, CustomPublisher>();
+        services.AddTransient<IUserDomainService, UserDomainService>();
+        services.AddTransient<IUserRepository, UserRepository>();
+        services.AddMediatR(typeof(Directories).Assembly, typeof(GetUserByPhoneNumberQuery).GetTypeInfo().Assembly);
+
 
         var serviceProvider = services.BuildServiceProvider();
 
@@ -41,8 +53,9 @@ public class SeedData
                             logger.LogError(message: message);
                         });
 
-            var ctx = scope.ServiceProvider.GetRequiredService<UserManagementContext>(); //Bug
 
+
+            var ctx = scope.ServiceProvider.GetRequiredService<UserManagementContext>();
             //if the sql server container is not created on run docker compose this
             //migration can't fail for network related exception. The retry options for DbContext only 
             //apply to transient exceptions                    
@@ -51,18 +64,18 @@ public class SeedData
 
             EnsureUsers(scope);
 
-            logger.LogInformation("Migrated database associated with context {DbContextName}", typeof(SeedData).Name);
+            logger.LogInformation("Migrated database associated with context {DbContextName}", nameof(SeedData));
         }
         catch (SqlException ex)
         {
-            logger.LogError(ex, "An error occurred while migrating the database used on context {DbContextName}", typeof(SeedData).Name);
+            logger.LogError(ex, "An error occurred while migrating the database used on context {DbContextName}", typeof(SeedData));
         }
     }
 
     private static void EnsureUsers(IServiceScope scope)
     {
+        var userDomainService = scope.ServiceProvider.GetService<IUserDomainService>();
         var applicationDbContext = scope.ServiceProvider.GetRequiredService<UserManagementContext>();
-        var domainService = scope.ServiceProvider.GetRequiredService<IUserDomainService>();
 
         if (applicationDbContext.Roles.Any(x => x.Title.Equals("Admin")))
         {
@@ -78,10 +91,10 @@ public class SeedData
             adminRole.SetPermissions(rolePermissions);
             applicationDbContext.Roles.Add(adminRole);
 
-            if (applicationDbContext.Users.Any(x => x.PhoneNumber.Equals("09139015261")))
+            if (!applicationDbContext.Users.Any(x => x.PhoneNumber.Equals("09139015261")))
             {
                 var password = Sha256Hasher.Hash("ABCd1234");
-                var user = User.CreateNew("Arash", "Aslani", "09139015261", "ArashAslani@Gmail.com", password, Domain.UserAgg.Enums.Gender.Male, domainService);
+                var user = User.CreateNew("Arash", "Aslani", "09139015261", "ArashAslani@Gmail.com", password, Domain.UserAgg.Enums.Gender.Male, userDomainService);
                 var userRoleList = new List<UserRole>() { new(adminRole.Id) };
                 user.SetRoles(userRoleList);
                 applicationDbContext.Users.Add(user);

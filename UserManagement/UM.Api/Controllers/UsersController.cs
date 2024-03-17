@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UM.Api.Infrastructure.Security;
 using UM.Api.ViewModels.Users;
+using UM.Application.Users.AddUserRole;
 using UM.Application.Users.ChangePassword;
 using UM.Application.Users.Create;
 using UM.Application.Users.Edit;
+using UM.Domain.RoleAgg;
 using UM.Domain.RoleAgg.Enums;
 using UM.Domain.UserAgg;
 using UM.Query.Users.DTOs;
@@ -16,7 +18,7 @@ using UM.Query.Users.GetById;
 namespace Shop.Api.Controllers;
 
 
-[Authorize]
+//[Authorize]
 public class UsersController : ApiController
 {
     private readonly IMediator _mediator;
@@ -26,7 +28,7 @@ public class UsersController : ApiController
         _mediator = mediator;
     }
 
-    [PermissionControl(Permission.User_Management)]
+    //[PermissionControl(Permission.User_Management)]
     [HttpGet]
     public async Task<ApiResult<UserFilterResult>> GetUsers([FromQuery] UserFilterParams filterParams)
     {
@@ -43,18 +45,36 @@ public class UsersController : ApiController
     }
 
     [PermissionControl(Permission.User_Management)]
-    [HttpGet("{userId}")]
-    public async Task<ApiResult<UserDto?>> GetById(UserId userId)
+    [HttpGet("{userIdStr}")]
+    public async Task<ApiResult<UserDto?>> GetById(string userIdStr)
     {
+        var userId = new UserId(Guid.Parse(userIdStr));
         var result = await _mediator.Send(new GetUserByIdQuery(userId));
         return QueryResult(result);
     }
 
-    [PermissionControl(Permission.User_Management)]
+    //[PermissionControl(Permission.User_Management)]
     [HttpPost]
     public async Task<ApiResult> Create(CreateUserCommand command)
     {
         var result = await _mediator.Send(command);
+        return CommandResult(result);
+    }
+
+    [HttpPost("SetUserRoles")]
+    public async Task<ApiResult> SetUserRoles(AddUserRolesViewModel command)
+    {
+        var userRoles = new List<UserRole>();
+        foreach (var roleId in command.Roles)
+        {
+            userRoles.Add(new UserRole(new RoleId(roleId)));
+        }
+        var addUserRolesCommand = new AddUserRoleCommand()
+        {
+            UserId = new UserId(command.UserId),
+            UserRoles = userRoles
+        };
+        var result = await _mediator.Send(addUserRolesCommand);
         return CommandResult(result);
     }
 

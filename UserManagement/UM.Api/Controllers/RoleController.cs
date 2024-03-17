@@ -13,7 +13,7 @@ using UM.Query.Roles.GetList;
 namespace UM.Api.Controllers;
 
 
-[PermissionControl(Permission.Role_Management)]
+//[PermissionControl(Permission.Role_Management)]
 public class RoleController : ApiController
 {
     private readonly IMediator _mediator;
@@ -30,9 +30,10 @@ public class RoleController : ApiController
         return QueryResult(result);
     }
 
-    [HttpGet("{roleId}")]
-    public async Task<ApiResult<RoleDto?>> GetRoleById(RoleId roleId)
+    [HttpGet("{roleIdStr}")]
+    public async Task<ApiResult<RoleDto?>> GetRoleById(string roleIdStr)
     {
+        var roleId = new RoleId(Guid.Parse(roleIdStr));
         var result = await _mediator.Send(new GetRoleByIdQuery(roleId));
         return QueryResult(result);
     }

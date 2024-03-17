@@ -6,6 +6,7 @@ using UM.Bootstrapper;
 using Common.DotNetCore.Middlewares;
 using UM.Api.Infrastructure.Jwt;
 using UM.Api.Infrastructure;
+using UM.Infrastructure.Persistent.EFCore;
 
 namespace UM.Api;
 
@@ -20,13 +21,12 @@ public class Program
         var connectionString = builder.Configuration.GetConnectionString("ApplicationConnection");
         builder.Services.RegisterUserManagementDependency(connectionString);
         builder.Services.RegisterCommonDependency();
-        builder.Services.RegisterApiDependecy();
+        builder.Services.RegisterApiDependecy(builder.Configuration);
         builder.Services.AddTransient<IFileService, FileService>();
         builder.Services.AddTransient<CustomJwtValidation>();
 
         //Seeding Data
-        //SeedData.EnsureSeedData(connectionString: connectionString); Has Bug
-
+        SeedData.EnsureSeedData(connectionString: connectionString); //Has Bug
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
