@@ -1,5 +1,4 @@
-﻿using Common.Application;
-using UM.Domain.UserAgg;
+﻿using UM.Domain.UserAgg;
 
 namespace UM.Application.Users.ChangePassword;
 

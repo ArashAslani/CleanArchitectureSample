@@ -5,7 +5,7 @@ using UM.Application;
 
 namespace Common.DotNetCore;
 
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 public class ApiController : ControllerBase
 {

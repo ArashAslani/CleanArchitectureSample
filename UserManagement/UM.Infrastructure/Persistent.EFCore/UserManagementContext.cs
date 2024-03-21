@@ -7,12 +7,18 @@ using UM.Infrastructure.Utilities.MediatR;
 
 namespace UM.Infrastructure.Persistent.EFCore;
 
-public class UserManagementContext(DbContextOptions<UserManagementContext> options, ICustomPublisher publisher) : DbContext(options)
+public class UserManagementContext : DbContext
 {
-    private readonly ICustomPublisher _publisher = publisher;
+    private readonly ICustomPublisher _publisher;
+
 
     public DbSet<Role> Roles { get; set; }
     public DbSet<User> Users { get; set; }
+
+    public UserManagementContext (DbContextOptions<UserManagementContext> options, ICustomPublisher publisher) : base (options)
+    {
+        _publisher = publisher;
+    }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
@@ -46,6 +52,7 @@ public class UserManagementContext(DbContextOptions<UserManagementContext> optio
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserManagementContext).Assembly);
 
         base.OnModelCreating(modelBuilder);

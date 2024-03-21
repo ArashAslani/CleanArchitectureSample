@@ -15,10 +15,10 @@ using UM.Query.Users.DTOs;
 using UM.Query.Users.GetByFilter;
 using UM.Query.Users.GetById;
 
-namespace Shop.Api.Controllers;
+namespace UM.Api.Controllers.V1;
 
-
-//[Authorize]
+[ApiVersion("1")]
+[Authorize]
 public class UsersController : ApiController
 {
     private readonly IMediator _mediator;
@@ -28,7 +28,7 @@ public class UsersController : ApiController
         _mediator = mediator;
     }
 
-    //[PermissionControl(Permission.User_Management)]
+    [PermissionControl(Permission.User_Management)]
     [HttpGet]
     public async Task<ApiResult<UserFilterResult>> GetUsers([FromQuery] UserFilterParams filterParams)
     {
@@ -53,7 +53,7 @@ public class UsersController : ApiController
         return QueryResult(result);
     }
 
-    //[PermissionControl(Permission.User_Management)]
+    [PermissionControl(Permission.User_Management)]
     [HttpPost]
     public async Task<ApiResult> Create(CreateUserCommand command)
     {
@@ -84,7 +84,7 @@ public class UsersController : ApiController
 
         var changePasswordModel = new ChangeUserPasswordCommand()
         {
-            UserId = new UserId (User.GetUserId()),
+            UserId = new UserId(User.GetUserId()),
             CurrentPassword = command.CurrentPassword,
             Password = command.Password
         };

@@ -1,5 +1,4 @@
-﻿using UM.Domain.RoleAgg.Enums;
-using UM.Domain.UserAgg;
+﻿using UM.Domain.UserAgg;
 
 namespace UM.Application.Users.AddUserRole
 {

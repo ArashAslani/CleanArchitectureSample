@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace UM.Api.Infrastructure.Jwt;
@@ -19,12 +20,17 @@ public static class JwtAuthenticationConfig
             {
                 IssuerSigningKey =
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtConfig:SignInKey"])),
-                ValidIssuer = configuration["JwtConfig:Issuer"],
-                ValidAudience = configuration["JwtConfig:Audience"],
                 ValidateLifetime = true,
+
                 ValidateIssuer = true,
+                ValidIssuer = configuration["JwtConfig:Issuer"],
+
+                ValidateAudience = true,
+                ValidAudience = configuration["JwtConfig:Audience"],
+
+
                 ValidateIssuerSigningKey = true,
-                ValidateAudience = true
+                TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtConfig:EncryptKey"]))
             };
             option.SaveToken = true;
             option.Events = new JwtBearerEvents()

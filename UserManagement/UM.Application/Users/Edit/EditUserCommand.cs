@@ -4,23 +4,13 @@ using UM.Domain.UserAgg.Enums;
 
 namespace UM.Application.Users.Edit;
 
-public class EditUserCommand : IBaseCommand
+public class EditUserCommand(UserId userId, IFormFile? avatar, string name, string family, string phoneNumber, string email, Gender gender) : IBaseCommand
 {
-    public EditUserCommand(UserId userId, IFormFile? avatar, string name, string family, string phoneNumber, string email, Gender gender)
-    {
-        UserId = userId;
-        Avatar = avatar;
-        Name = name;
-        Family = family;
-        PhoneNumber = phoneNumber;
-        Email = email;
-        Gender = gender;
-    }
-    public UserId UserId { get;  set; }
-    public IFormFile? Avatar { get; private set; }
-    public string Name { get; private set; }
-    public string Family { get; private set; }
-    public string PhoneNumber { get; private set; }
-    public string Email { get; private set; }
-    public Gender Gender { get; private set; }
+    public UserId UserId { get; set; } = userId;
+    public IFormFile? Avatar { get; private set; } = avatar;
+    public string Name { get; private set; } = name;
+    public string Family { get; private set; } = family;
+    public string PhoneNumber { get; private set; } = phoneNumber;
+    public string Email { get; private set; } = email;
+    public Gender Gender { get; private set; } = gender;
 }

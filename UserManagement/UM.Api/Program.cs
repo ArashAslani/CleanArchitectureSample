@@ -7,6 +7,9 @@ using Common.DotNetCore.Middlewares;
 using UM.Api.Infrastructure.Jwt;
 using UM.Api.Infrastructure;
 using UM.Infrastructure.Persistent.EFCore;
+using Common.DotNetCore.Swagger;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace UM.Api;
 
@@ -26,21 +29,40 @@ public class Program
         builder.Services.AddTransient<CustomJwtValidation>();
 
         //Seeding Data
-        SeedData.EnsureSeedData(connectionString: connectionString); //Has Bug
+        SeedData.EnsureSeedData(connectionString: connectionString);
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddNewtonsoftJson(option => // enum as a string | swagger config
+            {
+                option.SerializerSettings.Converters.Add(new StringEnumConverter());
+                option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+            });
+        builder.Services.AddSwaggerGenNewtonsoftSupport();
+
+        //Api Versioning Configuration
+        builder.Services.AddApiVersioning();
+
+        builder.Services.AddVersionedApiExplorer(
+            options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        //Swagger Configuration
+        builder.Services.AddSwagger();
+        builder.Services.AddSwaggerGenNewtonsoftSupport();
+
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerAndUi();
         }
+        app.UseApiCustomExceptionHandler();
 
         app.UseHttpsRedirection();
 
@@ -49,7 +71,6 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseApiCustomExceptionHandler();
 
         app.MapControllers();
 

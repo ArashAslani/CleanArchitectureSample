@@ -10,10 +10,11 @@ using UM.Query.Roles.DTOs;
 using UM.Query.Roles.GetById;
 using UM.Query.Roles.GetList;
 
-namespace UM.Api.Controllers;
+namespace UM.Api.Controllers.V1;
 
 
-//[PermissionControl(Permission.Role_Management)]
+[ApiVersion("1")]
+[PermissionControl(Permission.Role_Management)]
 public class RoleController : ApiController
 {
     private readonly IMediator _mediator;

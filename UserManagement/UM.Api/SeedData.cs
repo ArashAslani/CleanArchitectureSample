@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using System.Reflection;
 using UM.Application.Users;
@@ -53,8 +52,6 @@ public class SeedData
                             logger.LogError(message: message);
                         });
 
-
-
             var ctx = scope.ServiceProvider.GetRequiredService<UserManagementContext>();
             //if the sql server container is not created on run docker compose this
             //migration can't fail for network related exception. The retry options for DbContext only 
@@ -83,6 +80,7 @@ public class SeedData
             var rolePermissions = new List<RolePermission>()
             {
                 new(Permission.PanelAdmin),
+                new(Permission.EditProfile),
                 new(Permission.Role_Management),
                 new(Permission.User_Management),
                 new(Permission.CURD_User),
