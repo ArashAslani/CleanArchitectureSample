@@ -1,4 +1,4 @@
-﻿namespace UM.Domain.UserAgg.Enums;
+﻿namespace UM.Domain.Users.Enums;
 
 public enum Gender
 {

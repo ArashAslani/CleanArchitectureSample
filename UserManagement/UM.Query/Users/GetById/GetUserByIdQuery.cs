@@ -1,5 +1,5 @@
 ﻿using Common.Query;
-using UM.Domain.UserAgg;
+using UM.Domain.Users;
 using UM.Query.Users.DTOs;
 
 namespace UM.Query.Users.GetById;

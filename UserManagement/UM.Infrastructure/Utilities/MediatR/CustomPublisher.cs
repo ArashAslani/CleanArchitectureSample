@@ -62,7 +62,7 @@ public class CustomPublisher : ICustomPublisher
 
         foreach (var handler in handlers)
         {
-            tasks.Add(Task.Run(() => handler(notification, cancellationToken)));
+            tasks.Add(Task.Run(() => handler(notification, cancellationToken), cancellationToken));
         }
 
         return Task.WhenAny(tasks);
@@ -72,7 +72,7 @@ public class CustomPublisher : ICustomPublisher
     {
         foreach (var handler in handlers)
         {
-            Task.Run(() => handler(notification, cancellationToken));
+            Task.Run(() => handler(notification, cancellationToken), cancellationToken);
         }
 
         return Task.CompletedTask;
@@ -108,7 +108,7 @@ public class CustomPublisher : ICustomPublisher
             exceptions.Add(ex);
         }
 
-        if (exceptions.Any())
+        if (exceptions.Count != 0)
         {
             throw new AggregateException(exceptions);
         }
@@ -142,7 +142,7 @@ public class CustomPublisher : ICustomPublisher
             }
         }
 
-        if (exceptions.Any())
+        if (exceptions.Count != 0)
         {
             throw new AggregateException(exceptions);
         }

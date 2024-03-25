@@ -2,7 +2,7 @@
 using Common.DotNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using UM.Domain.UserAgg;
+using UM.Domain.Users;
 using UM.Query.Users.GetById;
 using UM.Query.Users.UserTokens.GetByJwtToken;
 

@@ -1,4 +1,4 @@
-﻿namespace UM.Domain.UserAgg.Services;
+﻿namespace UM.Domain.Users.Services;
 
 public interface IUserDomainService
 {

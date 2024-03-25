@@ -8,8 +8,7 @@ using UM.Api.Infrastructure.Jwt;
 using UM.Api.Infrastructure;
 using UM.Infrastructure.Persistent.EFCore;
 using Common.DotNetCore.Swagger;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+
 
 namespace UM.Api;
 
@@ -19,26 +18,21 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddCustomControllerConfig();
+        builder.Services.AddSwaggerGenNewtonsoftSupport();
+
+        var connectionString = builder.Configuration.GetConnectionString("ApplicationConnection");
+
+        //Seeding Data
+        SeedData.EnsureSeedData(connectionString: connectionString);
 
         // Add services to the container.
-        var connectionString = builder.Configuration.GetConnectionString("ApplicationConnection");
         builder.Services.RegisterUserManagementDependency(connectionString);
         builder.Services.RegisterCommonDependency();
         builder.Services.RegisterApiDependecy(builder.Configuration);
         builder.Services.AddTransient<IFileService, FileService>();
         builder.Services.AddTransient<CustomJwtValidation>();
 
-        //Seeding Data
-        SeedData.EnsureSeedData(connectionString: connectionString);
-
-        builder.Services.AddControllers()
-            .AddNewtonsoftJson(option => // enum as a string | swagger config
-            {
-                option.SerializerSettings.Converters.Add(new StringEnumConverter());
-                option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-
-            });
-        builder.Services.AddSwaggerGenNewtonsoftSupport();
 
         //Api Versioning Configuration
         builder.Services.AddApiVersioning();
@@ -49,10 +43,10 @@ public class Program
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
             });
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         //Swagger Configuration
         builder.Services.AddSwagger();
-        builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 
         var app = builder.Build();
@@ -67,6 +61,8 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
+
+        app.UseCors("UM.Api");
 
         app.UseAuthentication();
         app.UseAuthorization();

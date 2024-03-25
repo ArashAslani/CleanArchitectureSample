@@ -1,4 +1,4 @@
-﻿using UM.Domain.UserAgg;
+﻿using UM.Domain.Users;
 
 namespace UM.Application.Users.RemoveToken;
 

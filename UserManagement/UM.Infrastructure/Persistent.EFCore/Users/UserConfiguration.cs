@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using UM.Domain.UserAgg;
+using UM.Domain.Users;
 using UM.Domain.RoleAgg;
 
-namespace UM.Infrastructure.Persistent.EFCore.UserAgg;
+namespace UM.Infrastructure.Persistent.EFCore.Users;
 
 internal class UserConfiguration : IEntityTypeConfiguration<User>
 {

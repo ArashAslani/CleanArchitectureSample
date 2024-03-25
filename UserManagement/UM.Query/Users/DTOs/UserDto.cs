@@ -1,8 +1,8 @@
 ﻿using Common.Query;
 using Common.Query.Filter;
 using UM.Domain.RoleAgg;
-using UM.Domain.UserAgg;
-using UM.Domain.UserAgg.Enums;
+using UM.Domain.Users;
+using UM.Domain.Users.Enums;
 
 namespace UM.Query.Users.DTOs;
 

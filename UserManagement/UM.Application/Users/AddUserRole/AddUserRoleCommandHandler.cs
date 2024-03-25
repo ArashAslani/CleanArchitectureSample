@@ -1,5 +1,5 @@
 ﻿
-using UM.Domain.UserAgg.Repository;
+using UM.Domain.Users.Repository;
 
 namespace UM.Application.Users.AddUserRole
 {

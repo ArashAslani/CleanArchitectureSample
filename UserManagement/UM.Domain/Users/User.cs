@@ -1,10 +1,10 @@
 ﻿using Common.Domain;
 using Common.Domain.Exceptions;
 using Common.Domain.ValueObjects;
-using UM.Domain.UserAgg.Enums;
-using UM.Domain.UserAgg.Services;
+using UM.Domain.Users.Enums;
+using UM.Domain.Users.Services;
 
-namespace UM.Domain.UserAgg
+namespace UM.Domain.Users
 {
     public class User : AggregateRoot<UserId>
     {

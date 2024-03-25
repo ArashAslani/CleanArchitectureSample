@@ -1,5 +1,4 @@
-﻿using Common.Application.SecurityUtilities;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 
 namespace UM.Api.Infrastructure.Jwt;
 

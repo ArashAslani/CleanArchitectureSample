@@ -1,7 +1,7 @@
 ﻿using Common.Domain.Exceptions;
 using Common.Domain;
 
-namespace UM.Domain.UserAgg;
+namespace UM.Domain.Users;
 
 public class UserToken : BaseEntity<long>
 {

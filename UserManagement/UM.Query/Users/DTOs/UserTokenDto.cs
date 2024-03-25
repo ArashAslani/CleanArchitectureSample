@@ -1,5 +1,5 @@
 ﻿using Common.Query;
-using UM.Domain.UserAgg;
+using UM.Domain.Users;
 
 namespace UM.Query.Users.DTOs;
 

@@ -25,14 +25,14 @@ public class RoleController : ApiController
     }
 
     [HttpGet]
-    public async Task<ApiResult<List<RoleDto>>> GetRoles()
+    public virtual async Task<ApiResult<List<RoleDto>>> GetRoles()
     {
         var result = await _mediator.Send(new GetRoleListQuery()); ;
         return QueryResult(result);
     }
 
     [HttpGet("{roleIdStr}")]
-    public async Task<ApiResult<RoleDto?>> GetRoleById(string roleIdStr)
+    public virtual async Task<ApiResult<RoleDto?>> GetRoleById(string roleIdStr)
     {
         var roleId = new RoleId(Guid.Parse(roleIdStr));
         var result = await _mediator.Send(new GetRoleByIdQuery(roleId));
@@ -40,14 +40,14 @@ public class RoleController : ApiController
     }
 
     [HttpPost]
-    public async Task<ApiResult> CreateRole(CreateRoleCommand command)
+    public virtual async Task<ApiResult> CreateRole(CreateRoleCommand command)
     {
         var result = await _mediator.Send(command);
         return CommandResult(result);
     }
 
     [HttpPut]
-    public async Task<ApiResult> EditRole(EditRoleCommand command)
+    public virtual async Task<ApiResult> EditRole(EditRoleCommand command)
     {
         var result = await _mediator.Send(command);
         return CommandResult(result);

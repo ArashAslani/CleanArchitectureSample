@@ -1,4 +1,4 @@
-﻿using UM.Domain.UserAgg.Enums;
+﻿using UM.Domain.Users.Enums;
 
 namespace UM.Application.Users.Create;
 

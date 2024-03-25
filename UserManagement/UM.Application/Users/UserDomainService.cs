@@ -1,5 +1,5 @@
-﻿using UM.Domain.UserAgg.Repository;
-using UM.Domain.UserAgg.Services;
+﻿using UM.Domain.Users.Repository;
+using UM.Domain.Users.Services;
 
 namespace UM.Application.Users;
 

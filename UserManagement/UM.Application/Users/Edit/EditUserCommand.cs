@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using UM.Domain.UserAgg;
-using UM.Domain.UserAgg.Enums;
+using UM.Domain.Users;
+using UM.Domain.Users.Enums;
 
 namespace UM.Application.Users.Edit;
 

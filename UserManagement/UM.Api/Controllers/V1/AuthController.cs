@@ -17,9 +17,7 @@ using UM.Query.Users.GetById;
 using Microsoft.AspNetCore.Authentication;
 using UM.Query.Users.UserTokens.GetByJwtToken;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 using System.Net;
-using UM.Domain.UserAgg;
 
 namespace UM.Api.Controllers.V1;
 
@@ -34,7 +32,7 @@ public class AuthController : ApiController
         _configuration = configuration;
     }
     [HttpPost("login")]
-    public async Task<ActionResult?> Login([FromForm]LoginViewModel loginViewModel)
+    public virtual async Task<ActionResult?> Login([FromForm]LoginViewModel loginViewModel)
     {
         var user = await _mediator.Send(new GetUserByPhoneNumberQuery(loginViewModel.UserName));
         if (user == null)
@@ -57,7 +55,7 @@ public class AuthController : ApiController
     }
 
     [HttpPost("register")]
-    public async Task<ApiResult> Register(RegisterViewModel register)
+    public virtual async Task<ApiResult> Register(RegisterViewModel register)
     {
         var command = new RegisterUserCommand(new PhoneNumber(register.PhoneNumber), register.Password);
         var result = await _mediator.Send(command);
@@ -65,7 +63,7 @@ public class AuthController : ApiController
     }
 
     [HttpPost("RefreshToken")]
-    public async Task<ActionResult> RefreshToken(string refreshToken)
+    public virtual async Task<ActionResult> RefreshToken(string refreshToken)
     {
         var hashRefreshToken = Sha256Hasher.Hash(refreshToken);
         var result = await _mediator.Send(new GetUserTokenByRefreshTokenQuery(hashRefreshToken));
@@ -100,7 +98,7 @@ public class AuthController : ApiController
 
     [Authorize]
     [HttpDelete("logout")]
-    public async Task<ApiResult> Logout()
+    public virtual async Task<ApiResult> Logout()
     {
         var token = await HttpContext.GetTokenAsync("access_token");
         var hashJwtToken = Sha256Hasher.Hash(token);
@@ -117,7 +115,7 @@ public class AuthController : ApiController
         return CommandResult(OperationResult.Success());
     }
 
-    private async Task<OperationResult<AccessToken?>> AddTokenAndGenerateJwt(UserDto user)
+    private virtual async Task<OperationResult<AccessToken?>> AddTokenAndGenerateJwt(UserDto user)
     {
         var uaParser = Parser.GetDefault();
         var header = HttpContext.Request.Headers.UserAgent.ToString();

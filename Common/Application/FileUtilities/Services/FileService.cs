@@ -45,7 +45,7 @@ namespace Common.Application.FileUtilities.Services
         public async Task<string> SaveFileAndGenerateName(IFormFile file, string directoryPath)
         {
             if (file == null)
-                throw new InvalidDataException("file is Null");
+                throw new InvalidDataException("File is Null");
 
             var fileName = file.FileName;
 

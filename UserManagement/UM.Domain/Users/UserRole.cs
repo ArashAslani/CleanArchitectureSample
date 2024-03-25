@@ -1,7 +1,7 @@
 ﻿using Common.Domain;
 using UM.Domain.RoleAgg;
 
-namespace UM.Domain.UserAgg;
+namespace UM.Domain.Users;
 
 public class UserRole : BaseEntity<long>
 {

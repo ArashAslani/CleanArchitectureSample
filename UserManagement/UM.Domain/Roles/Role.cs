@@ -1,8 +1,8 @@
 ﻿using Common.Domain.Exceptions;
 using Common.Domain;
-using UM.Domain.UserAgg.Enums;
-using UM.Domain.UserAgg.Services;
-using UM.Domain.UserAgg;
+using UM.Domain.Users.Enums;
+using UM.Domain.Users.Services;
+using UM.Domain.Users;
 
 namespace UM.Domain.RoleAgg;
 

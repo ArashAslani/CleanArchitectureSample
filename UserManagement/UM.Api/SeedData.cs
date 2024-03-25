@@ -8,10 +8,10 @@ using UM.Application.Users;
 using UM.Application.Utilities;
 using UM.Domain.RoleAgg;
 using UM.Domain.RoleAgg.Enums;
-using UM.Domain.UserAgg;
-using UM.Domain.UserAgg.Repository;
-using UM.Domain.UserAgg.Services;
-using UM.Infrastructure.Persistent.EFCore.UserAgg;
+using UM.Domain.Users;
+using UM.Domain.Users.Repository;
+using UM.Domain.Users.Services;
+using UM.Infrastructure.Persistent.EFCore.Users;
 using UM.Infrastructure.Utilities.MediatR;
 using UM.Query.Users.GetByPhoneNumber;
 
@@ -92,7 +92,7 @@ public class SeedData
             if (!applicationDbContext.Users.Any(x => x.PhoneNumber.Equals("09139015261")))
             {
                 var password = Sha256Hasher.Hash("ABCd1234");
-                var user = User.CreateNew("Arash", "Aslani", "09139015261", "ArashAslani@Gmail.com", password, Domain.UserAgg.Enums.Gender.Male, userDomainService);
+                var user = User.CreateNew("Arash", "Aslani", "09139015261", "ArashAslani@Gmail.com", password, Domain.Users.Enums.Gender.Male, userDomainService);
                 var userRoleList = new List<UserRole>() { new(adminRole.Id) };
                 user.SetRoles(userRoleList);
                 applicationDbContext.Users.Add(user);

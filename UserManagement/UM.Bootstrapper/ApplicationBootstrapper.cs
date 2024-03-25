@@ -5,7 +5,7 @@ using System.Reflection;
 using UM.Application.Users;
 using UM.Application.Users.Create;
 using UM.Application.Utilities;
-using UM.Domain.UserAgg.Services;
+using UM.Domain.Users.Services;
 using UM.Infrastructure;
 using UM.Query.Users.GetByPhoneNumber;
 

@@ -1,8 +1,8 @@
-﻿using UM.Domain.UserAgg.Repository;
-using UM.Domain.UserAgg;
+﻿using UM.Domain.Users.Repository;
+using UM.Domain.Users;
 using UM.Infrastructure.Utilities;
 
-namespace UM.Infrastructure.Persistent.EFCore.UserAgg;
+namespace UM.Infrastructure.Persistent.EFCore.Users;
 
 public class UserRepository : BaseRepository<User, UserId>, IUserRepository
 {

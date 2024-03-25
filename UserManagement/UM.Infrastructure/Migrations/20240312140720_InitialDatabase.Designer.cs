@@ -43,7 +43,7 @@ namespace UM.Infrastructure.Migrations
                     b.ToTable("Roles", "role");
                 });
 
-            modelBuilder.Entity("UM.Domain.UserAgg.User", b =>
+            modelBuilder.Entity("UM.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -127,9 +127,9 @@ namespace UM.Infrastructure.Migrations
                     b.Navigation("Permissions");
                 });
 
-            modelBuilder.Entity("UM.Domain.UserAgg.User", b =>
+            modelBuilder.Entity("UM.Domain.Users.User", b =>
                 {
-                    b.OwnsMany("UM.Domain.UserAgg.UserRole", "Roles", b1 =>
+                    b.OwnsMany("UM.Domain.Users.UserRole", "Roles", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");
@@ -158,7 +158,7 @@ namespace UM.Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsMany("UM.Domain.UserAgg.UserToken", "Tokens", b1 =>
+                    b.OwnsMany("UM.Domain.Users.UserToken", "Tokens", b1 =>
                         {
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()

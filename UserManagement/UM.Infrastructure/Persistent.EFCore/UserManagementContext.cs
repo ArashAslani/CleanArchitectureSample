@@ -1,7 +1,7 @@
 ﻿using Common.Domain;
 using Microsoft.EntityFrameworkCore;
 using UM.Domain.RoleAgg;
-using UM.Domain.UserAgg;
+using UM.Domain.Users;
 using UM.Infrastructure.Utilities.MediatR;
 
 

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
@@ -19,11 +18,6 @@ namespace Common.DotNetCore.Swagger
             //More info : https://github.com/mattfrear/Swashbuckle.AspNetCore.Filters
 
             #region AddSwaggerExamples
-            //Add services to use Example Filters in swagger
-            //If you want to use the Request and Response example filters (and have called options.ExampleFilters() above), then you MUST also call
-            //This method to register all ExamplesProvider classes form the assembly
-            //services.AddSwaggerExamplesFromAssemblyOf<PersonRequestExample>();
-
             //We call this method for by reflection with the Startup type of entry assembly (UM.Api assembly)
             var mainAssembly = Assembly.GetEntryAssembly(); // => UM.Api project assembly
             var mainType = mainAssembly?.GetExportedTypes()[0];
@@ -112,39 +106,17 @@ namespace Common.DotNetCore.Swagger
             Assert.NotNull(app, nameof(app));
 
             //Swagger middleware for generate "Open API Documentation" in swagger.json
-            app.UseSwagger(/*options =>
-            {
-                options.RouteTemplate = "api-docs/{documentName}/swagger.json";
-            }*/);
+            app.UseSwagger();
 
             //Swagger middleware for generate UI from swagger.json
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
-                options.SwaggerEndpoint("/swagger/v2/swagger.json", "V2 Docs");
+                //options.SwaggerEndpoint("/swagger/v2/swagger.json", "V2 Docs");
 
                 #region Customizing
                 //// Display
-                //options.DefaultModelExpandDepth(2);
-                //options.DefaultModelRendering(ModelRendering.Model);
-                //options.DefaultModelsExpandDepth(-1);
-                //options.DisplayOperationId();
-                //options.DisplayRequestDuration();
                 options.DocExpansion(DocExpansion.None);
-                //options.EnableDeepLinking();
-                //options.EnableFilter();
-                //options.MaxDisplayedTags(5);
-                //options.ShowExtensions();
-
-                //// Network
-                //options.EnableValidator();
-                //options.SupportedSubmitMethods(SubmitMethod.Get);
-
-                //// Other
-                //options.DocumentTitle = "CustomUIConfig";
-                //options.InjectStylesheet("/ext/custom-stylesheet.css");
-                //options.InjectJavascript("/ext/custom-javascript.js");
-                //options.RoutePrefix = "api-docs";
                 #endregion
             });
 
@@ -155,10 +127,6 @@ namespace Common.DotNetCore.Swagger
                 //options.SpecUrl("/swagger/v2/swagger.json");
 
                 #region Customizing
-                //By default, the ReDoc UI will be exposed at "/api-docs"
-                //options.RoutePrefix = "docs";
-                //options.DocumentTitle = "My API Docs";
-
                 options.EnableUntrustedSpec();
                 options.ScrollYOffset(10);
                 options.HideHostname();

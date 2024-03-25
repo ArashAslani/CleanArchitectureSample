@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UM.Domain.UserAgg;
+using UM.Domain.Users;
 using UM.Infrastructure.Persistent.EFCore;
 using UM.Query.Users.DTOs;
 

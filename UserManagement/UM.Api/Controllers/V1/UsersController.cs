@@ -10,7 +10,7 @@ using UM.Application.Users.Create;
 using UM.Application.Users.Edit;
 using UM.Domain.RoleAgg;
 using UM.Domain.RoleAgg.Enums;
-using UM.Domain.UserAgg;
+using UM.Domain.Users;
 using UM.Query.Users.DTOs;
 using UM.Query.Users.GetByFilter;
 using UM.Query.Users.GetById;
@@ -30,14 +30,14 @@ public class UsersController : ApiController
 
     [PermissionControl(Permission.User_Management)]
     [HttpGet]
-    public async Task<ApiResult<UserFilterResult>> GetUsers([FromQuery] UserFilterParams filterParams)
+    public virtual async Task<ApiResult<UserFilterResult>> GetUsers([FromQuery] UserFilterParams filterParams)
     {
         var result = await _mediator.Send(new GetUserByFilterQuery(filterParams));
         return QueryResult(result);
     }
 
     [HttpGet("Current")]
-    public async Task<ApiResult<UserDto>> GetCurrentUser()
+    public virtual async Task<ApiResult<UserDto>> GetCurrentUser()
     {
         var userId = new UserId(User.GetUserId());
         var result = await _mediator.Send(new GetUserByIdQuery(userId));
@@ -46,7 +46,7 @@ public class UsersController : ApiController
 
     [PermissionControl(Permission.User_Management)]
     [HttpGet("{userIdStr}")]
-    public async Task<ApiResult<UserDto?>> GetById(string userIdStr)
+    public virtual async Task<ApiResult<UserDto?>> GetById(string userIdStr)
     {
         var userId = new UserId(Guid.Parse(userIdStr));
         var result = await _mediator.Send(new GetUserByIdQuery(userId));
@@ -55,14 +55,14 @@ public class UsersController : ApiController
 
     [PermissionControl(Permission.User_Management)]
     [HttpPost]
-    public async Task<ApiResult> Create(CreateUserCommand command)
+    public virtual async Task<ApiResult> Create(CreateUserCommand command)
     {
         var result = await _mediator.Send(command);
         return CommandResult(result);
     }
 
     [HttpPost("SetUserRoles")]
-    public async Task<ApiResult> SetUserRoles(AddUserRolesViewModel command)
+    public virtual async Task<ApiResult> SetUserRoles(AddUserRolesViewModel command)
     {
         var userRoles = new List<UserRole>();
         foreach (var roleId in command.Roles)
@@ -79,7 +79,7 @@ public class UsersController : ApiController
     }
 
     [HttpPut("ChangePassword")]
-    public async Task<ApiResult> ChangePassword(ChangePasswordViewModel command)
+    public virtual async Task<ApiResult> ChangePassword(ChangePasswordViewModel command)
     {
 
         var changePasswordModel = new ChangeUserPasswordCommand()
@@ -93,7 +93,7 @@ public class UsersController : ApiController
     }
 
     [HttpPut("Current")]
-    public async Task<ApiResult> EditUser([FromForm] EditUserViewModel command)
+    public virtual async Task<ApiResult> EditUser([FromForm] EditUserViewModel command)
     {
         var userId = new UserId(User.GetUserId());
         var commandModel = new EditUserCommand(userId, command.Avatar, command.Name, command.Family,
@@ -105,7 +105,7 @@ public class UsersController : ApiController
 
     [PermissionControl(Permission.User_Management)]
     [HttpPut]
-    public async Task<ApiResult> Edit([FromForm] EditUserCommand command)
+    public virtual async Task<ApiResult> Edit([FromForm] EditUserCommand command)
     {
         var result = await _mediator.Send(command);
         return CommandResult(result);

@@ -1,7 +1,7 @@
 ﻿using Common.Application.SecurityUtilities;
-using UM.Domain.UserAgg;
-using UM.Domain.UserAgg.Repository;
-using UM.Domain.UserAgg.Services;
+using UM.Domain.Users;
+using UM.Domain.Users.Repository;
+using UM.Domain.Users.Services;
 
 namespace UM.Application.Users.Create;
 

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using UM.Domain.RoleAgg.Enums;
-using UM.Domain.UserAgg;
+using UM.Domain.Users;
 using UM.Query.Roles.GetList;
 using UM.Query.Users.GetById;
 

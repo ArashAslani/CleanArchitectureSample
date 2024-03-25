@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Common.Application.Validation.CustomValidation.IFormFile;
-using UM.Domain.UserAgg.Enums;
+using UM.Domain.Users.Enums;
 
 namespace UM.Api.ViewModels.Users;
 
