@@ -1,5 +1,4 @@
 ﻿using Common.DotNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UM.Api.Infrastructure.Security;
 using UM.Application.Roles.Create;
@@ -7,8 +6,7 @@ using UM.Application.Roles.Edit;
 using UM.Domain.RoleAgg;
 using UM.Domain.RoleAgg.Enums;
 using UM.Query.Roles.DTOs;
-using UM.Query.Roles.GetById;
-using UM.Query.Roles.GetList;
+using UM.ServiceHost.Facade.Roles;
 
 namespace UM.Api.Controllers.V1;
 
@@ -17,17 +15,17 @@ namespace UM.Api.Controllers.V1;
 [PermissionControl(Permission.Role_Management)]
 public class RoleController : ApiController
 {
-    private readonly IMediator _mediator;
+    private readonly IRoleFacade _roleFacade;
 
-    public RoleController(IMediator mediator)
+    public RoleController(IRoleFacade roleFacade)
     {
-        _mediator = mediator;
+        _roleFacade = roleFacade;
     }
 
     [HttpGet]
     public virtual async Task<ApiResult<List<RoleDto>>> GetRoles()
     {
-        var result = await _mediator.Send(new GetRoleListQuery()); ;
+        var result = await _roleFacade.GetRoles();
         return QueryResult(result);
     }
 
@@ -35,21 +33,21 @@ public class RoleController : ApiController
     public virtual async Task<ApiResult<RoleDto?>> GetRoleById(string roleIdStr)
     {
         var roleId = roleIdStr.ToRoleIdInstance();
-        var result = await _mediator.Send(new GetRoleByIdQuery(roleId));
+        var result = await _roleFacade.GetRoleById(roleId);
         return QueryResult(result);
     }
 
     [HttpPost]
     public virtual async Task<ApiResult> CreateRole(CreateRoleCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await _roleFacade.CreateRole(command);
         return CommandResult(result);
     }
 
     [HttpPut]
     public virtual async Task<ApiResult> EditRole(EditRoleCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await _roleFacade.EditRole(command);
         return CommandResult(result);
     }
 }

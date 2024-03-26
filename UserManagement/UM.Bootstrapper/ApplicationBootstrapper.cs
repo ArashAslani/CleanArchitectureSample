@@ -8,6 +8,7 @@ using UM.Application.Utilities;
 using UM.Domain.Users.Services;
 using UM.Infrastructure;
 using UM.Query.Users.GetByPhoneNumber;
+using UM.ServiceHost.Facade;
 
 namespace UM.Bootstrapper
 {
@@ -20,6 +21,7 @@ namespace UM.Bootstrapper
             services.AddMediatR(typeof(Directories).Assembly, typeof(GetUserByPhoneNumberQuery).GetTypeInfo().Assembly);
             services.AddTransient<IUserDomainService, UserDomainService>();
             services.AddValidatorsFromAssembly(typeof(CreateUserCommand).Assembly);
+            services.InitFacadeDependency();
 
             return services;
         }

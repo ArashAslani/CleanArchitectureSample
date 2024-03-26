@@ -27,5 +27,6 @@ public class InfrastructureBootstrapper
         {
             option.UseSqlServer(connectionString);
         });
+
     }
 }

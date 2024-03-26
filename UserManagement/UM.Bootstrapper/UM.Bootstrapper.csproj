@@ -13,8 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.csproj" />
-    <ProjectReference Include="..\UM.Application\UM.Application.csproj" />
-    <ProjectReference Include="..\UM.Query\UM.Query.csproj" />
+    <ProjectReference Include="..\UM.Presentation.Facade\UM.ServiceHost.Facade.csproj" />
   </ItemGroup>
 
 </Project>

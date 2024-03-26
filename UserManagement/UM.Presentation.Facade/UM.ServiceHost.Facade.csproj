@@ -11,9 +11,4 @@
 		<ProjectReference Include="..\UM.Query\UM.Query.csproj" />
 	</ItemGroup>
 
-
-	<ItemGroup>
-    <Folder Include="Roles\" />
-  </ItemGroup>
-
 </Project>

@@ -18,7 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.csproj" />
     <ProjectReference Include="..\UM.Bootstrapper\UM.Bootstrapper.csproj" />
-    <ProjectReference Include="..\UM.Presentation.Facade\UM.ServiceHost.Facade.csproj" />
   </ItemGroup>
 
   <ItemGroup>
