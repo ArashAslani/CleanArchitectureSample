@@ -25,7 +25,7 @@ public class Role : AggregateRoot<RoleId>
     }
     public static Role CreateNewWithPermissions(string title, List<RolePermission> permissions)
     {
-        var roleId = new RoleId(Guid.NewGuid());
+        var roleId = Guid.NewGuid().ToRoleIdInstance();
         return new Role(roleId, title, permissions);
     }
 
@@ -40,7 +40,7 @@ public class Role : AggregateRoot<RoleId>
 
     public static Role CreateNew(string title)
     {
-        var roleId = new RoleId(Guid.NewGuid());
+        var roleId = Guid.NewGuid().ToRoleIdInstance();
         return new Role(roleId, title);
     }
 

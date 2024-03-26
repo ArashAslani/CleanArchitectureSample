@@ -34,7 +34,7 @@ public class RoleController : ApiController
     [HttpGet("{roleIdStr}")]
     public virtual async Task<ApiResult<RoleDto?>> GetRoleById(string roleIdStr)
     {
-        var roleId = new RoleId(Guid.Parse(roleIdStr));
+        var roleId = roleIdStr.ToRoleIdInstance();
         var result = await _mediator.Send(new GetRoleByIdQuery(roleId));
         return QueryResult(result);
     }

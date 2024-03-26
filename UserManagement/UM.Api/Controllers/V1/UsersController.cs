@@ -1,5 +1,4 @@
 ﻿using Common.DotNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UM.Api.Infrastructure.Security;
@@ -12,8 +11,7 @@ using UM.Domain.RoleAgg;
 using UM.Domain.RoleAgg.Enums;
 using UM.Domain.Users;
 using UM.Query.Users.DTOs;
-using UM.Query.Users.GetByFilter;
-using UM.Query.Users.GetById;
+using UM.ServiceHost.Facade.Users;
 
 namespace UM.Api.Controllers.V1;
 
@@ -21,26 +19,25 @@ namespace UM.Api.Controllers.V1;
 [Authorize]
 public class UsersController : ApiController
 {
-    private readonly IMediator _mediator;
-
-    public UsersController(IMediator mediator)
+    private readonly IUserFacade _userFacade;
+    public UsersController(IUserFacade userFacade)
     {
-        _mediator = mediator;
+        _userFacade = userFacade;
     }
 
     [PermissionControl(Permission.User_Management)]
     [HttpGet]
     public virtual async Task<ApiResult<UserFilterResult>> GetUsers([FromQuery] UserFilterParams filterParams)
     {
-        var result = await _mediator.Send(new GetUserByFilterQuery(filterParams));
+        var result = await _userFacade.GetUserByFilter(filterParams);
         return QueryResult(result);
     }
 
     [HttpGet("Current")]
     public virtual async Task<ApiResult<UserDto>> GetCurrentUser()
     {
-        var userId = new UserId(User.GetUserId());
-        var result = await _mediator.Send(new GetUserByIdQuery(userId));
+        var userId = User.GetUserId().ToUserIdInstance();
+        var result = await _userFacade.GetUserById(userId);
         return QueryResult(result);
     }
 
@@ -48,8 +45,8 @@ public class UsersController : ApiController
     [HttpGet("{userIdStr}")]
     public virtual async Task<ApiResult<UserDto?>> GetById(string userIdStr)
     {
-        var userId = new UserId(Guid.Parse(userIdStr));
-        var result = await _mediator.Send(new GetUserByIdQuery(userId));
+        var userId = Guid.Parse(userIdStr).ToUserIdInstance();
+        var result = await _userFacade.GetUserById(userId);
         return QueryResult(result);
     }
 
@@ -57,7 +54,7 @@ public class UsersController : ApiController
     [HttpPost]
     public virtual async Task<ApiResult> Create(CreateUserCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await _userFacade.CreateUser(command);
         return CommandResult(result);
     }
 
@@ -67,14 +64,14 @@ public class UsersController : ApiController
         var userRoles = new List<UserRole>();
         foreach (var roleId in command.Roles)
         {
-            userRoles.Add(new UserRole(new RoleId(roleId)));
+            userRoles.Add(new UserRole(roleId.ToRoleIdInstance()));
         }
         var addUserRolesCommand = new AddUserRoleCommand()
         {
-            UserId = new UserId(command.UserId),
+            UserId = command.UserId.ToUserIdInstance(),
             UserRoles = userRoles
         };
-        var result = await _mediator.Send(addUserRolesCommand);
+        var result = await _userFacade.AddUserRoles(addUserRolesCommand);
         return CommandResult(result);
     }
 
@@ -84,22 +81,22 @@ public class UsersController : ApiController
 
         var changePasswordModel = new ChangeUserPasswordCommand()
         {
-            UserId = new UserId(User.GetUserId()),
+            UserId = User.GetUserId().ToUserIdInstance(),
             CurrentPassword = command.CurrentPassword,
             Password = command.Password
         };
-        var result = await _mediator.Send(changePasswordModel);
+        var result = await _userFacade.ChangePassword(changePasswordModel);
         return CommandResult(result);
     }
 
     [HttpPut("Current")]
     public virtual async Task<ApiResult> EditUser([FromForm] EditUserViewModel command)
     {
-        var userId = new UserId(User.GetUserId());
+        var userId = User.GetUserId().ToUserIdInstance();
         var commandModel = new EditUserCommand(userId, command.Avatar, command.Name, command.Family,
             command.PhoneNumber, command.Email, command.Gender);
 
-        var result = await _mediator.Send(commandModel);
+        var result = await _userFacade.EditUser(commandModel);
         return CommandResult(result);
     }
 
@@ -107,7 +104,7 @@ public class UsersController : ApiController
     [HttpPut]
     public virtual async Task<ApiResult> Edit([FromForm] EditUserCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await _userFacade.EditUser(command);
         return CommandResult(result);
     }
 }

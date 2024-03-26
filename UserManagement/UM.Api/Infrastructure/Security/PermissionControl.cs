@@ -61,7 +61,7 @@ public class PermissionControl : AuthorizeAttribute, IAsyncAuthorizationFilter
     }
     private async Task<bool> UserHasPermission(AuthorizationFilterContext context)
     {
-        var userId = new UserId(context.HttpContext.User.GetUserId());
+        var userId = context.HttpContext.User.GetUserId().ToUserIdInstance();
         var user = await _mediator.Send(new GetUserByIdQuery(userId));
         if (user == null)
             return false;

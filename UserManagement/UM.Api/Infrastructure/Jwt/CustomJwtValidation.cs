@@ -19,7 +19,7 @@ public class CustomJwtValidation
 
     public async Task Validate(TokenValidatedContext context)
     {
-        var userId = new UserId(context.Principal.GetUserId());
+        var userId = context.Principal.GetUserId().ToUserIdInstance();
         var jwtToken = context.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
 
         var hashJwtToken = Sha256Hasher.Hash(jwtToken);

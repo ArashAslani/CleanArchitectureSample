@@ -15,11 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UM.Api", "UserManagement\UM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UM.Query", "UserManagement\UM.Query\UM.Query.csproj", "{55938779-F901-4FF3-95BC-10B904EF869B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UM.Presentation.Facade", "UserManagement\UM.Presentation.Facade\UM.Presentation.Facade.csproj", "{4A96C479-7A85-4511-A9B3-6E1A6B8D50FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UM.ServiceHost.Facade", "UserManagement\UM.Presentation.Facade\UM.ServiceHost.Facade.csproj", "{4A96C479-7A85-4511-A9B3-6E1A6B8D50FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{02C65F8E-9A71-434E-AC02-BE172C28456B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UM.Bootstrapper", "UserManagement\UM.Bootstrapper\UM.Bootstrapper.csproj", "{D7E4EE43-2643-4143-B683-EEDF0B1540F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UM.Bootstrapper", "UserManagement\UM.Bootstrapper\UM.Bootstrapper.csproj", "{D7E4EE43-2643-4143-B683-EEDF0B1540F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

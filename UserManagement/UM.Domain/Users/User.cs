@@ -48,7 +48,7 @@ namespace UM.Domain.Users
         public static User CreateNew(string firstName, string lastName, string phoneNumber, string email,
             string password, Gender gender, IUserDomainService userDomainService)
         {
-            var userId = new UserId(Guid.NewGuid());
+            var userId = Guid.NewGuid().ToUserIdInstance();
             return new User(userId, firstName, lastName, phoneNumber, email, password, gender, userDomainService);
         }
 
@@ -72,7 +72,7 @@ namespace UM.Domain.Users
         }
         public static User RegisterUser(string phoneNumber, string password, IUserDomainService userDomainService)
         {
-            var userId = new UserId(Guid.NewGuid());
+            var userId = Guid.NewGuid().ToUserIdInstance();
             return new User(userId, "", "", phoneNumber, null, password, Gender.None, userDomainService);
         }
 

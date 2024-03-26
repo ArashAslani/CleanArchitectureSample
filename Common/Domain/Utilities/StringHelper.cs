@@ -2,11 +2,19 @@
 
 namespace Common.Domain.Utilities;
 
-public static class StringHelper
+public static partial class StringHelper
 {
+    [GeneratedRegex(@"^\d+$")]
+    private static partial Regex StringValidateRegax();
+
     public static bool IsText(this string value)
     {
-        var isNumber = Regex.IsMatch(value, @"^\d+$");
+        var isNumber = StringValidateRegax().IsMatch(value);
         return !isNumber;
     }
+
+     public static (bool Status, Guid Value) IsGuid(this string value)
+     {
+        return (Guid.TryParse(value, out Guid GuidValue), GuidValue);
+     }
 }

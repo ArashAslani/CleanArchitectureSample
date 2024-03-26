@@ -7,34 +7,31 @@ using UM.Api.ViewModels.Auth;
 using UM.Application.Users.AddToken;
 using UM.Application;
 using UM.Query.Users.DTOs;
-using UM.Query.Users.GetByPhoneNumber;
 using UAParser;
 using Common.Domain.ValueObjects;
 using UM.Application.Users.Register;
 using UM.Application.Users.RemoveToken;
-using UM.Query.Users.UserTokens.GetByRefreshToken;
-using UM.Query.Users.GetById;
 using Microsoft.AspNetCore.Authentication;
-using UM.Query.Users.UserTokens.GetByJwtToken;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
+using UM.ServiceHost.Facade.Users;
 
 namespace UM.Api.Controllers.V1;
 
 [ApiVersion("1")]
 public class AuthController : ApiController
 {
-    private readonly IMediator _mediator;
     private readonly IConfiguration _configuration;
-    public AuthController(IMediator mediator, IConfiguration configuration)
+    private readonly IUserFacade _userFacade;
+    public AuthController(IConfiguration configuration, IUserFacade userFacade)
     {
-        _mediator = mediator;
         _configuration = configuration;
+        _userFacade = userFacade;
     }
     [HttpPost("login")]
     public virtual async Task<ActionResult?> Login([FromForm]LoginViewModel loginViewModel)
     {
-        var user = await _mediator.Send(new GetUserByPhoneNumberQuery(loginViewModel.UserName));
+        var user = await _userFacade.GetUserByPhoneNumber(loginViewModel.UserName);
         if (user == null)
         {
             return new JsonResult(new { IsSuccess = false, StatusCode = HttpStatusCode.NotFound, Message = "UserName Or Password Is Incurrect." });
@@ -58,15 +55,14 @@ public class AuthController : ApiController
     public virtual async Task<ApiResult> Register(RegisterViewModel register)
     {
         var command = new RegisterUserCommand(new PhoneNumber(register.PhoneNumber), register.Password);
-        var result = await _mediator.Send(command);
+        var result = await _userFacade.RegisterUser(command);
         return CommandResult(result);
     }
 
     [HttpPost("RefreshToken")]
     public virtual async Task<ActionResult> RefreshToken(string refreshToken)
     {
-        var hashRefreshToken = Sha256Hasher.Hash(refreshToken);
-        var result = await _mediator.Send(new GetUserTokenByRefreshTokenQuery(hashRefreshToken));
+        var result = await _userFacade.GetUserTokenByRefreshToken(refreshToken);
 
         if (result == null)
             return new JsonResult((IsSuccess: false, StatusCode: HttpStatusCode.NotFound, Message: "User not found."));
@@ -82,9 +78,9 @@ public class AuthController : ApiController
             return new JsonResult((IsSuccess: false, StatusCode: HttpStatusCode.NotAcceptable, Message: "Token refresh time is over."));
         }
 
-        var user = await _mediator.Send(new GetUserByIdQuery(result.UserId));
+        var user = await _userFacade.GetUserById(result.UserId);
 
-        var removeTokenResult = await _mediator.Send(new RemoveUserTokenCommand(result.UserId, result.Id));
+        var removeTokenResult = await _userFacade.RemoveToken(new RemoveUserTokenCommand(result.UserId, result.Id));
 
         if (removeTokenResult.Status != OperationResultStatus.Success)
             return new JsonResult((IsSuccess: false, StatusCode: HttpStatusCode.InternalServerError, Message: removeTokenResult.Message));
@@ -101,21 +97,16 @@ public class AuthController : ApiController
     public virtual async Task<ApiResult> Logout()
     {
         var token = await HttpContext.GetTokenAsync("access_token");
-        var hashJwtToken = Sha256Hasher.Hash(token);
-        var result = await _mediator.Send(new GetUserTokenByJwtTokenQuery(hashJwtToken));
+        var result = await _userFacade.GetUserTokenByJwtToken(token);
         if (result == null)
             return CommandResult(OperationResult.NotFound());
 
-        var removeTokenResult = await _mediator.Send(new RemoveUserTokenCommand(result.UserId, result.Id));
+        var removeTokenResult = await _userFacade.RemoveToken(new RemoveUserTokenCommand(result.UserId, result.Id));
 
-        if (removeTokenResult.Status != OperationResultStatus.Success)
-            return CommandResult(OperationResult.Error(removeTokenResult.Message));
-
-
-        return CommandResult(OperationResult.Success());
+        return CommandResult(removeTokenResult);
     }
 
-    private virtual async Task<OperationResult<AccessToken?>> AddTokenAndGenerateJwt(UserDto user)
+    protected virtual async Task<OperationResult<AccessToken?>> AddTokenAndGenerateJwt(UserDto user)
     {
         var uaParser = Parser.GetDefault();
         var header = HttpContext.Request.Headers.UserAgent.ToString();
@@ -132,7 +123,7 @@ public class AuthController : ApiController
         var hashedAccessToken = Sha256Hasher.Hash(accessToken.access_token);
         var hashedRefreshToken = Sha256Hasher.Hash(accessToken.refresh_token);
 
-        var tokenResult = await _mediator.Send(new AddUserTokenCommand(user.Id, hashedAccessToken, hashedRefreshToken, DateTime.Now.AddSeconds(accessToken.expires_in), DateTime.Now.AddDays(1), device));
+        var tokenResult = await _userFacade.AddToken(new AddUserTokenCommand(user.Id, hashedAccessToken, hashedRefreshToken, DateTime.Now.AddSeconds(accessToken.expires_in), DateTime.Now.AddDays(1), device));
         if (tokenResult.Status != OperationResultStatus.Success)
             return OperationResult<AccessToken?>.Error();
 
