@@ -1,9 +1,10 @@
-﻿using UM.Domain.Users.Repository;
+﻿using Common.DotNetCore.Utilities.DependencyInjection;
+using UM.Domain.Users.Repository;
 using UM.Domain.Users.Services;
 
 namespace UM.Application.Users;
 
-public class UserDomainService : IUserDomainService
+public class UserDomainService : IUserDomainService, ITransientDependency
 {
     private readonly IUserRepository _repository;
 

@@ -6,10 +6,11 @@ using UM.Query.Roles.DTOs;
 using UM.Query.Roles.GetById;
 using UM.Query.Roles.GetList;
 using UM.Domain.RoleAgg;
+using Common.DotNetCore.Utilities.DependencyInjection;
 
 namespace UM.ServiceHost.Facade.Roles
 {
-    public class RoleFacade : IRoleFacade
+    public class RoleFacade : IRoleFacade, IScopedDependency
     {
         private readonly IMediator _mediator;
 

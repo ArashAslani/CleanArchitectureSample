@@ -6,7 +6,7 @@ namespace Common.Application;
 
 public static class CommonBootstrapper
 {
-    public static IServiceCollection RegisterCommonDependency(this IServiceCollection service)
+    public static IServiceCollection AddCommonServiceCollections(this IServiceCollection service)
     {
         service.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehavior<,>));
 

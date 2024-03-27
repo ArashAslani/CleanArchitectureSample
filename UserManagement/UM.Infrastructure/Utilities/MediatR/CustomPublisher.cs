@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using Common.DotNetCore.Utilities.DependencyInjection;
+using MediatR;
 
 namespace UM.Infrastructure.Utilities.MediatR;
 
-public class CustomPublisher : ICustomPublisher
+public class CustomPublisher : ICustomPublisher, ISingeltonDependency
 {
     public CustomPublisher(ServiceFactory serviceFactory)
     {

@@ -1,5 +1,6 @@
 ﻿using Common.Application.SecurityUtilities;
 using Common.DotNetCore.Utilities;
+using Common.DotNetCore.Utilities.DependencyInjection;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using UM.Domain.Users;
@@ -8,7 +9,7 @@ using UM.Query.Users.UserTokens.GetByJwtToken;
 
 namespace UM.Api.Infrastructure.Jwt;
 
-public class CustomJwtValidation
+public class CustomJwtValidation : ICustomJwtValidation, ITransientDependency
 {
     private readonly IMediator _mediator;
 

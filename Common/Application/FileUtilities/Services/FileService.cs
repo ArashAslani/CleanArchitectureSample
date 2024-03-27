@@ -1,9 +1,10 @@
 ﻿using Common.Application.FileUtilities.Contracts;
+using Common.DotNetCore.Utilities.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 
 namespace Common.Application.FileUtilities.Services
 {
-    public class FileService : IFileService
+    public class FileService : IFileService, ITransientDependency
     {
         public void DeleteDirectory(string directoryPath)
         {

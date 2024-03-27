@@ -1,13 +1,17 @@
-
 using Common.Application;
-using Common.Application.FileUtilities.Contracts;
-using Common.Application.FileUtilities.Services;
 using UM.Bootstrapper;
 using Common.DotNetCore.Middlewares;
-using UM.Api.Infrastructure.Jwt;
 using UM.Api.Infrastructure;
 using UM.Infrastructure.Persistent.EFCore;
 using Common.DotNetCore.Swagger;
+using System.Reflection;
+using UM.ServiceHost.Facade;
+using UM.Application;
+using UM.Domain;
+using UM.Infrastructure;
+using UM.Query;
+using Common;
+using Common.DotNetCore.Configuration;
 
 
 namespace UM.Api;
@@ -18,20 +22,30 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddCustomControllerConfig();
-        builder.Services.AddSwaggerGenNewtonsoftSupport();
+        builder.Services.AddMinimalMvc();
 
         var connectionString = builder.Configuration.GetConnectionString("ApplicationConnection");
 
         //Seeding Data
         SeedData.EnsureSeedData(connectionString: connectionString);
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddServices(Assembly.GetExecutingAssembly(),
+            typeof(ApiAssembly).Assembly,
+            typeof(ApplicationAssembly).Assembly,
+            typeof(DomainAssembly).Assembly,
+            typeof(InfrastructureAssembly).Assembly,
+            typeof(FacadeAssembly).Assembly,
+            typeof(QueryAssembly).Assembly,
+            typeof(CommonAssembly).Assembly);
+
 
         // Add services to the container.
-        builder.Services.RegisterUserManagementDependency(connectionString);
-        builder.Services.RegisterCommonDependency();
-        builder.Services.RegisterApiDependecy(builder.Configuration);
-        builder.Services.AddTransient<IFileService, FileService>();
-        builder.Services.AddTransient<CustomJwtValidation>();
+        builder.Services.AddUserManagementDependency(connectionString);
+        builder.Services.AddCommonServiceCollections();
+        builder.Services.AddJwtConfigs(builder.Configuration);
+        builder.Services.AddCorsConfigs();
+
+        //builder.Services.AddTransient<IFileService, FileService>();
 
         //Add Distributed Cache
         builder.Services.AddDistributedMemoryCache(); // By defult use in memory

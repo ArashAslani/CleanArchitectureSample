@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace UM.Api.Infrastructure.Jwt;
@@ -38,7 +37,7 @@ public static class JwtAuthenticationConfig
                 OnTokenValidated = async context =>
                 {
                     var customValidate = context.HttpContext.RequestServices
-                        .GetRequiredService<CustomJwtValidation>();
+                        .GetRequiredService<ICustomJwtValidation>();
                     await customValidate.Validate(context);
                 }
             };

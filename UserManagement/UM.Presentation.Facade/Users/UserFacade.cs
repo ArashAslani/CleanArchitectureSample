@@ -17,10 +17,11 @@ using UM.Query.Users.UserTokens.GetByJwtToken;
 using UM.Application.Users.AddUserRole;
 using Microsoft.Extensions.Caching.Distributed;
 using Common.DotNetCore.Utilities;
+using Common.DotNetCore.Utilities.DependencyInjection;
 
 namespace UM.ServiceHost.Facade.Users
 {
-    public class UserFacade : IUserFacade
+    public class UserFacade : IUserFacade, IScopedDependency
     {
         private readonly IMediator _mediator;
         private readonly IDistributedCache _cache;

@@ -7,8 +7,9 @@
   </PropertyGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\UM.Infrastructure\UM.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Common\Common.csproj" />
+    <ProjectReference Include="..\UM.Application\UM.Application.csproj" />
+    <ProjectReference Include="..\UM.Infrastructure\UM.Infrastructure.csproj" />
 
   </ItemGroup>
 

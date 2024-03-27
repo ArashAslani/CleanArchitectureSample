@@ -23,11 +23,14 @@ public class AuthController : ApiController
 {
     private readonly IConfiguration _configuration;
     private readonly IUserFacade _userFacade;
-    public AuthController(IConfiguration configuration, IUserFacade userFacade)
+    private readonly IJwtService _jwtService;
+    public AuthController(IConfiguration configuration, IUserFacade userFacade, IJwtService jwtService)
     {
         _configuration = configuration;
         _userFacade = userFacade;
+        _jwtService = jwtService;
     }
+
     [HttpPost("login")]
     public virtual async Task<ActionResult?> Login([FromForm]LoginViewModel loginViewModel)
     {
@@ -47,7 +50,7 @@ public class AuthController : ApiController
             return new JsonResult(new { IsSuccess = false, StatusCode = HttpStatusCode.Forbidden, Message = "Your account is deactivate." });
         }
 
-        var jwtIperation = await AddTokenAndGenerateJwt(user);
+        var jwtIperation = await _jwtService.GenerateAsync(user);
         return new JsonResult(jwtIperation.Data);
     }
 
@@ -86,7 +89,7 @@ public class AuthController : ApiController
             return new JsonResult((IsSuccess: false, StatusCode: HttpStatusCode.InternalServerError, Message: removeTokenResult.Message));
 
 
-        var jwt = await AddTokenAndGenerateJwt(user);
+        var jwt = await _jwtService.GenerateAsync(user);
 
         return new JsonResult(jwt);
     }
@@ -104,29 +107,5 @@ public class AuthController : ApiController
         var removeTokenResult = await _userFacade.RemoveToken(new RemoveUserTokenCommand(result.UserId, result.Id));
 
         return CommandResult(removeTokenResult);
-    }
-
-    protected virtual async Task<OperationResult<AccessToken?>> AddTokenAndGenerateJwt(UserDto user)
-    {
-        var uaParser = Parser.GetDefault();
-        var header = HttpContext.Request.Headers.UserAgent.ToString();
-        var device = "windows";
-        if (header != null)
-        {
-            var info = uaParser.Parse(header);
-            device = $"{info.Device.Family}/{info.OS.Family} {info.OS.Major}.{info.OS.Minor} - {info.UA.Family}";
-        }
-
-        var jwtSecurityToken = JwtTokenBuilder.BuildToken(user, _configuration);
-        var accessToken = new AccessToken(jwtSecurityToken);
-
-        var hashedAccessToken = Sha256Hasher.Hash(accessToken.access_token);
-        var hashedRefreshToken = Sha256Hasher.Hash(accessToken.refresh_token);
-
-        var tokenResult = await _userFacade.AddToken(new AddUserTokenCommand(user.Id, hashedAccessToken, hashedRefreshToken, DateTime.Now.AddSeconds(accessToken.expires_in), DateTime.Now.AddDays(1), device));
-        if (tokenResult.Status != OperationResultStatus.Success)
-            return OperationResult<AccessToken?>.Error();
-
-        return OperationResult<AccessToken?>.Success(accessToken);
     }
 }
