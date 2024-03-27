@@ -33,10 +33,11 @@ public class Program
         builder.Services.AddTransient<IFileService, FileService>();
         builder.Services.AddTransient<CustomJwtValidation>();
 
+        //Add Distributed Cache
+        builder.Services.AddDistributedMemoryCache(); // By defult use in memory
 
         //Api Versioning Configuration
         builder.Services.AddApiVersioning();
-
         builder.Services.AddVersionedApiExplorer(
             options =>
             {
@@ -44,7 +45,6 @@ public class Program
                 options.SubstituteApiVersionInUrl = true;
             });
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         //Swagger Configuration
         builder.Services.AddSwagger();
 

@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 
-namespace Common.DotNetCore;
+namespace Common.DotNetCore.Utilities;
 
-public static class ClaimUtilities
+public static class ClaimExtensions
 {
     public static Guid GetUserId(this ClaimsPrincipal principal)
     {

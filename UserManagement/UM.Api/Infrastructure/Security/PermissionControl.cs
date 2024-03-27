@@ -1,4 +1,4 @@
-﻿using Common.DotNetCore;
+﻿using Common.DotNetCore.Utilities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

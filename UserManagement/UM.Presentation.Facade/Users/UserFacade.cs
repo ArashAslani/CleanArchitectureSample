@@ -15,15 +15,19 @@ using UM.Query.Users.GetById;
 using UM.Domain.Users;
 using UM.Query.Users.UserTokens.GetByJwtToken;
 using UM.Application.Users.AddUserRole;
+using Microsoft.Extensions.Caching.Distributed;
+using Common.DotNetCore.Utilities;
 
 namespace UM.ServiceHost.Facade.Users
 {
     public class UserFacade : IUserFacade
     {
         private readonly IMediator _mediator;
-        public UserFacade(IMediator mediator)
+        private readonly IDistributedCache _cache;
+        public UserFacade(IMediator mediator, IDistributedCache cache)
         {
             _mediator = mediator;
+            _cache = cache;
         }
 
 
@@ -44,23 +48,36 @@ namespace UM.ServiceHost.Facade.Users
             if (result.Status != OperationResultStatus.Success)
                 return OperationResult.Error(result.Message);
 
+            await _cache.RemoveAsync(CacheKeys.UserToken(result.Data));
+
             return OperationResult.Success();
         }
 
         public async Task<OperationResult> ChangePassword(ChangeUserPasswordCommand command)
         {
+            await _cache.RemoveAsync(CacheKeys.User(command.UserId));
             return await _mediator.Send(command);
         }
 
         public async Task<OperationResult> EditUser(EditUserCommand command)
         {
             var result = await _mediator.Send(command);
+            if (result.Status == OperationResultStatus.Success)
+                await _cache.RemoveAsync(CacheKeys.User(command.UserId));
             return result;
         }
 
         public async Task<UserDto?> GetUserById(UserId userId)
         {
-            return await _mediator.Send(new GetUserByIdQuery(userId));
+            return await _cache.GetOrSet(CacheKeys.User(userId), () =>
+            {
+                return _mediator.Send(new GetUserByIdQuery(userId));
+            }, 
+            new CacheOptions 
+            { 
+                AbsoluteExpirationCacheFromMinutes = 5,
+                ExpireSlidingCacheFromMinutes = 10
+            });
         }
 
         public async Task<UserTokenDto?> GetUserTokenByRefreshToken(string refreshToken)
@@ -72,8 +89,11 @@ namespace UM.ServiceHost.Facade.Users
         public async Task<UserTokenDto?> GetUserTokenByJwtToken(string jwtToken)
         {
             var hashJwtToken = Sha256Hasher.Hash(jwtToken);
-            
-            return await _mediator.Send(new GetUserTokenByJwtTokenQuery(hashJwtToken));
+
+            return await _cache.GetOrSet(CacheKeys.UserToken(hashJwtToken), () =>
+            {
+                return _mediator.Send(new GetUserTokenByJwtTokenQuery(hashJwtToken));
+            });
         }
 
         public async Task<UserFilterResult> GetUserByFilter(UserFilterParams filterParams)

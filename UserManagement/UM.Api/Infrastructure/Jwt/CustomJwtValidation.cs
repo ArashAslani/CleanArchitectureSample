@@ -1,5 +1,5 @@
 ﻿using Common.Application.SecurityUtilities;
-using Common.DotNetCore;
+using Common.DotNetCore.Utilities;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using UM.Domain.Users;
